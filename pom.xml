@@ -9,6 +9,18 @@
   <url>http://maven.apache.org</url>
   <build>
     <finalName>CodingFactory5</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version> <!-- Use the appropriate version -->
+        <configuration>
+          <compilerArgs>
+            <arg>-parameters</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
   <properties>
@@ -55,11 +67,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
-    <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa &ndash;&gt;-->
-    <!--        <dependency>-->
-    <!--            <groupId>org.springframework.boot</groupId>-->
-    <!--            <artifactId>spring-boot-starter-data-jpa</artifactId>-->
-    <!--        </dependency>-->
 
 
     <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
@@ -99,7 +106,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>33.1.0-jre</version>
+      <version>33.2.0-jre</version>
     </dependency>
 
 
@@ -110,13 +117,70 @@
       <version>1.18.32</version>
       <scope>provided</scope>
     </dependency>
-    <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.projectlombok/lombok-maven-plugin &ndash;&gt;-->
-    <!--        <dependency>-->
-    <!--            <groupId>org.projectlombok</groupId>-->
-    <!--            <artifactId>lombok-maven-plugin</artifactId>-->
-    <!--            <version>1.18.20.0</version>-->
-    <!--            <scope>provided</scope>-->
-    <!--        </dependency>-->
+    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok-maven-plugin -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok-maven-plugin</artifactId>
+      <version>1.18.20.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <version>3.3.0</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-tomcat -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+      <version>3.3.0</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper -->
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-jasper</artifactId>
+      <scope>default</scope> <!-- default for Intellij IDE -->
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/jakarta.servlet.jsp.jstl/jakarta.servlet.jsp.jstl-api -->
+    <dependency>
+      <groupId>jakarta.servlet.jsp.jstl</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>bootstrap</artifactId>
+      <version>5.3.3</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.webjars.bower/jquery -->
+    <dependency>
+      <groupId>org.webjars.bower</groupId>
+      <artifactId>jquery</artifactId>
+      <version>3.7.1</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.webjars/bootstrap-datepicker -->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>bootstrap-datepicker</artifactId>
+      <version>1.10.0</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <version>3.13.0</version>
+    </dependency>
+
 
   </dependencies>
   <repositories>
