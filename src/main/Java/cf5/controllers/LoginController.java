@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 @Controller
@@ -29,7 +30,7 @@ public class LoginController extends AbstractController {
             if (authenticationService.authenticateUser(username, password)) {
                 return AppConfig.ApplicationPages.WELCOME_PAGE.getPage();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | NoSuchAlgorithmException e) {
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.LOGIN_PAGE.getPage();
         }

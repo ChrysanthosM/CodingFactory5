@@ -1,6 +1,7 @@
 package cf5.services.generic;
 
 import cf5.Utils.Converters;
+import cf5.Utils.PasswordUtils;
 import cf5.dtos.UserDTO;
 import cf5.services.model.UsersService;
 import org.apache.commons.lang3.StringUtils;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Optional;
@@ -26,13 +28,13 @@ public class AuthenticationService {
         return StringUtils.EMPTY;
     }
 
-    public void insertNewUser(@Nonnull String username, @Nonnull String password, @Nonnull String firstName, @Nonnull String lastName, @Nonnull String birthDate, @Nonnull String email) throws ParseException, SQLException, InvocationTargetException, IllegalAccessException {
-        UserDTO userDTO = new UserDTO(0, firstName, password, firstName, lastName, email, Converters.convertStringToDate(birthDate));
+    public void insertNewUser(@Nonnull String username, @Nonnull String password, @Nonnull String firstName, @Nonnull String lastName, @Nonnull String birthDate, @Nonnull String email) throws ParseException, SQLException, InvocationTargetException, IllegalAccessException, NoSuchAlgorithmException {
+        UserDTO userDTO = new UserDTO(0, firstName, PasswordUtils.hashPassword(password), firstName, lastName, email, Converters.convertStringToDate(birthDate));
         usersService.insert(userDTO);
     }
 
-    public boolean authenticateUser(@Nonnull String username, @Nonnull String password) throws SQLException {
-        return (usersService.countByUserNamePassword(username, password).compareTo(0L) > 0);
+    public boolean authenticateUser(@Nonnull String username, @Nonnull String password) throws SQLException, NoSuchAlgorithmException {
+        return (usersService.countByUserNamePassword(username, PasswordUtils.hashPassword(password)).compareTo(0L) > 0);
     }
 
 }
