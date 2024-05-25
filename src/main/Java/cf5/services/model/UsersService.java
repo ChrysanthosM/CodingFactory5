@@ -1,6 +1,5 @@
 package cf5.services.model;
 
-import cf5.Utils.RecordUtils;
 import cf5.dtos.UserDTO;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +17,7 @@ public final class UsersService extends AbstractService<UserDTO> {
     private static final String queryDeleteOne = "DELETE FROM USERS WHERE ID = ?";
 
     private static final String querySelectByUserName = "SELECT * FROM USERS WHERE USERNAME = ?";
+    private static final String querySelectByUserNamePassword = "SELECT COUNT(*) FROM USERS WHERE UPPER(USERNAME) = UPPER(?) AND PASSWORD = ?";
 
     @Override
     public Optional<UserDTO> get(Object... keyValues) throws SQLException {
@@ -43,5 +43,8 @@ public final class UsersService extends AbstractService<UserDTO> {
 
     public Optional<UserDTO> getByUserName(Object... keyValues) throws SQLException {
         return getJdbcIO().selectOne(getDefaultDataSource(), UserDTO.newConverter(), querySelectByUserName, keyValues);
+    }
+    public Long getByUserNamePassword(Object... keyValues) throws SQLException {
+        return getJdbcIO().selectNumeric(getDefaultDataSource(), querySelectByUserNamePassword, keyValues).orElse(0L);
     }
 }

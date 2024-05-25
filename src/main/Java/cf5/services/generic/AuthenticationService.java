@@ -31,10 +31,8 @@ public class AuthenticationService {
         usersService.insert(userDTO);
     }
 
-
-
-    public boolean authenticateUser(@Nonnull String username, @Nonnull String password) {
-        return username.equals("admin") && password.equals("admin");
+    public boolean authenticateUser(@Nonnull String username, @Nonnull String password) throws SQLException {
+        return (usersService.getByUserNamePassword(username, password).compareTo(0L) > 0);
     }
 
 }

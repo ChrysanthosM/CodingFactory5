@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -95,6 +96,23 @@ public final class JdbcIO {
             }
         }
         return Optional.empty() ;
+    }
+    public Optional<Long> selectNumeric(@Nonnull DataSource dataSource,
+                                        @Nonnull String query, @Nullable Object... params) throws SQLException {
+        Preconditions.checkNotNull(dataSource);
+        Preconditions.checkNotNull(query);
+
+        try (Connection conn = dataSource.getConnection();
+             final PreparedStatement stmt = conn.prepareStatement(query)) {
+            setParams(stmt, params);
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    return Optional.of(resultSet.getLong(1));
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     public int[] addBatch(@Nonnull DataSource dataSource,
