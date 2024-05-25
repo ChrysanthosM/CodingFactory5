@@ -30,7 +30,7 @@ public class SignUpController extends AbstractController {
         keepValueToModel(httpSession, modelMap, "birthDate");
         keepValueToModel(httpSession, modelMap, "email");
 
-        return AppConfig.ApplicationPages.SIGN_UP_PAGE.getCode();
+        return AppConfig.ApplicationPages.SIGN_UP_PAGE.getPage();
     }
 
     @RequestMapping(value = "signup", method = RequestMethod.POST)
@@ -50,20 +50,20 @@ public class SignUpController extends AbstractController {
             String authMessage = authenticationService.authenticateSignUp(username, password, confirmPassword);
             if (StringUtils.isNotBlank(authMessage)) {
                 modelMap.put("errorMessage", "Error: " + authMessage);
-                return AppConfig.ApplicationPages.SIGN_UP_PAGE.getCode();
+                return AppConfig.ApplicationPages.SIGN_UP_PAGE.getPage();
             }
         } catch (SQLException e) {
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
-            return AppConfig.ApplicationPages.SIGN_UP_PAGE.getCode();
+            return AppConfig.ApplicationPages.SIGN_UP_PAGE.getPage();
         }
 
         try {
             authenticationService.insertNewUser(username, password, firstName, lastName, birthDate, email);
         } catch (Exception e) {
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
-            return AppConfig.ApplicationPages.SIGN_UP_PAGE.getCode();
+            return AppConfig.ApplicationPages.SIGN_UP_PAGE.getPage();
         }
 
-        return AppConfig.ApplicationPages.WELCOME_PAGE.getCode();
+        return AppConfig.ApplicationPages.WELCOME_PAGE.getPage();
     }
 }

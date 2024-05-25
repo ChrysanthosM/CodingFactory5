@@ -1,6 +1,7 @@
 package cf5.db;
 
 import cf5.db.loader.IRowLoader;
+import com.google.common.annotations.Beta;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -22,42 +23,6 @@ import java.util.stream.IntStream;
 @ThreadSafe
 @Component
 public final class JdbcIO {
-    /**
-     * !!!!!!!!! RETURNS UNSORTED List !!!!!!!!!
-     */
-    public <T> List<T> selectAsync(@Nonnull DataSource dataSource, @Nonnull IRowLoader<T> rowLoader,
-                                   @Nonnull String query, @Nullable Object... params) throws SQLException {
-        Preconditions.checkNotNull(dataSource);
-        Preconditions.checkNotNull(query);
-        List<T> returnList = new CopyOnWriteArrayList<>();
-
-        List<CompletableFuture<T>> futureTs = Lists.newArrayList();
-        try (Connection conn = dataSource.getConnection();
-             final PreparedStatement stmt = conn.prepareStatement(query)) {
-            setParams(stmt, params);
-
-            try (ResultSet resultSet = stmt.executeQuery()) {
-                ResultSetMetaData metaData = resultSet.getMetaData();
-                while (resultSet.next()) {
-                    final List<Map.Entry<String, Object>> columnNamesValues = getColumnNamesValues(metaData, resultSet);
-                    CompletableFuture<T> futureT = CompletableFuture.supplyAsync(() -> {
-                        try {
-                            return rowLoader.convertResultSet(columnNamesValues);
-                        } catch (Exception e) {
-                            throw new RuntimeException("Error creating futureT", e);
-                        }
-                    });
-                    futureTs.add(futureT);
-                }
-                futureTs.parallelStream().forEach(futureT -> {
-                    T completedT = futureT.join();
-                    if (completedT != null) returnList.add(completedT);
-                });
-            }
-            return ImmutableList.copyOf(returnList);
-        }
-    }
-
     public <T> List<T> select(@Nonnull DataSource dataSource, @Nonnull IRowLoader<T> rowLoader,
                               @Nonnull String query, @Nullable Object... params) throws SQLException {
         Preconditions.checkNotNull(dataSource);
@@ -216,5 +181,42 @@ public final class JdbcIO {
             }
         });
         return ImmutableList.copyOf(columnNamesValues);
+    }
+
+    /**
+     * !!!!!!!!! RETURNS UNSORTED List !!!!!!!!!
+     */
+    @Beta
+    public <T> List<T> selectAsync(@Nonnull DataSource dataSource, @Nonnull IRowLoader<T> rowLoader,
+                                   @Nonnull String query, @Nullable Object... params) throws SQLException {
+        Preconditions.checkNotNull(dataSource);
+        Preconditions.checkNotNull(query);
+        List<T> returnList = new CopyOnWriteArrayList<>();
+
+        List<CompletableFuture<T>> futureTs = Lists.newArrayList();
+        try (Connection conn = dataSource.getConnection();
+             final PreparedStatement stmt = conn.prepareStatement(query)) {
+            setParams(stmt, params);
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                while (resultSet.next()) {
+                    final List<Map.Entry<String, Object>> columnNamesValues = getColumnNamesValues(metaData, resultSet);
+                    CompletableFuture<T> futureT = CompletableFuture.supplyAsync(() -> {
+                        try {
+                            return rowLoader.convertResultSet(columnNamesValues);
+                        } catch (Exception e) {
+                            throw new RuntimeException("Error creating futureT", e);
+                        }
+                    });
+                    futureTs.add(futureT);
+                }
+                futureTs.parallelStream().forEach(futureT -> {
+                    T completedT = futureT.join();
+                    if (completedT != null) returnList.add(completedT);
+                });
+            }
+            return ImmutableList.copyOf(returnList);
+        }
     }
 }

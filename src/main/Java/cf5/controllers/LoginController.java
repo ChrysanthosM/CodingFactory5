@@ -3,7 +3,6 @@ package cf5.controllers;
 import cf5.AppConfig;
 import cf5.services.generic.AuthenticationService;
 import jakarta.servlet.http.HttpSession;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,7 +18,7 @@ public class LoginController extends AbstractController {
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public String goToLoginPage() {
-        return AppConfig.ApplicationPages.LOGIN_PAGE.getCode();
+        return AppConfig.ApplicationPages.LOGIN_PAGE.getPage();
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
@@ -28,13 +27,13 @@ public class LoginController extends AbstractController {
         putValueToModel(httpSession, modelMap, "username", username);
         try {
             if (authenticationService.authenticateUser(username, password)) {
-                return AppConfig.ApplicationPages.WELCOME_PAGE.getCode();
+                return AppConfig.ApplicationPages.WELCOME_PAGE.getPage();
             }
         } catch (SQLException e) {
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
-            return AppConfig.ApplicationPages.LOGIN_PAGE.getCode();
+            return AppConfig.ApplicationPages.LOGIN_PAGE.getPage();
         }
         modelMap.put("errorMessage", "Invalid credentials! Please try again");
-        return AppConfig.ApplicationPages.LOGIN_PAGE.getCode();
+        return AppConfig.ApplicationPages.LOGIN_PAGE.getPage();
     }
 }
