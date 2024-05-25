@@ -32,7 +32,7 @@ public class AuthenticationService {
     }
 
     public boolean authenticateUser(@Nonnull String username, @Nonnull String password) throws SQLException {
-        return (usersService.getByUserNamePassword(username, password).compareTo(0L) > 0);
+        return (usersService.countByUserNamePassword(username, password).compareTo(0L) > 0);
     }
 
 }

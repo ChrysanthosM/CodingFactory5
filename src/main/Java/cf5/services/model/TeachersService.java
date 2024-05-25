@@ -1,33 +1,32 @@
 package cf5.services.model;
 
 import cf5.dtos.TeacherDTO;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 public final class TeachersService extends AbstractService<TeacherDTO> {
-    private static final String querySelectOne = "SELECT * FROM Teachers WHERE ID = ?";
-    private static final String querySelectAll = "SELECT * FROM Teachers";
-    private static final String queryInsertOne = "INSERT INTO Teachers (USER_ID) VALUES (?)";
-    private static final String queryUpdateOne = "UPDATE Teachers SET USER_ID = ? WHERE ID = ?";
-    private static final String queryDeleteOne = "DELETE FROM Teachers WHERE ID = ?";
+    private static final String querySelectOne = "SELECT * FROM TEACHERS WHERE ID = ?";
+    private static final String querySelectAll = "SELECT * FROM TEACHERS";
+    private static final String queryInsertOne = "INSERT INTO TEACHERS (USER_ID) VALUES (?)";
+    private static final String queryUpdateOne = "UPDATE TEACHERS SET USER_ID = ? WHERE ID = ?";
+    private static final String queryDeleteOne = "DELETE FROM TEACHERS WHERE ID = ?";
 
     @Override
     public Optional<TeacherDTO> get(Object... keyValues) throws SQLException {
-        return getJdbcIO().selectOne(getDefaultDataSource(), TeacherDTO.newConverter(), querySelectOne, keyValues);
+        return super.defaultSelectOne(TeacherDTO.newConverter(), querySelectOne, keyValues);
     }
     @Override
     public List<TeacherDTO> getAll() throws SQLException {
-        return getJdbcIO().select(getDefaultDataSource(), TeacherDTO.newConverter(), querySelectAll);
+        return super.defaultSelectAll(TeacherDTO.newConverter(), querySelectAll);
     }
-
     @Override
     public void insert(TeacherDTO teacherDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
-        defaultInsert(teacherDTO, queryInsertOne);
+        super.defaultInsert(teacherDTO, queryInsertOne);
     }
     @Override
     public void update(TeacherDTO teacherDTO) throws SQLException, InvocationTargetException, IllegalAccessException {

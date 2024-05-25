@@ -2,13 +2,14 @@ package cf5.services.model;
 
 import cf5.dtos.UserDTO;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 public final class UsersService extends AbstractService<UserDTO> {
     private static final String querySelectOne = "SELECT * FROM USERS WHERE ID = ?";
     private static final String querySelectAll = "SELECT * FROM USERS";
@@ -17,17 +18,16 @@ public final class UsersService extends AbstractService<UserDTO> {
     private static final String queryDeleteOne = "DELETE FROM USERS WHERE ID = ?";
 
     private static final String querySelectByUserName = "SELECT * FROM USERS WHERE USERNAME = ?";
-    private static final String querySelectByUserNamePassword = "SELECT COUNT(*) FROM USERS WHERE UPPER(USERNAME) = UPPER(?) AND PASSWORD = ?";
+    private static final String queryCountByUserNamePassword = "SELECT COUNT(*) FROM USERS WHERE UPPER(USERNAME) = UPPER(?) AND PASSWORD = ?";
 
     @Override
     public Optional<UserDTO> get(Object... keyValues) throws SQLException {
-        return getJdbcIO().selectOne(getDefaultDataSource(), UserDTO.newConverter(), querySelectOne, keyValues);
+        return super.defaultSelectOne(UserDTO.newConverter(), querySelectOne, keyValues);
     }
     @Override
     public List<UserDTO> getAll() throws SQLException {
-        return getJdbcIO().select(getDefaultDataSource(), UserDTO.newConverter(), querySelectAll);
+        return super.defaultSelectAll(UserDTO.newConverter(), querySelectAll);
     }
-
     @Override
     public void insert(UserDTO userDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
         super.defaultInsert(userDTO, queryInsertOne);
@@ -44,7 +44,7 @@ public final class UsersService extends AbstractService<UserDTO> {
     public Optional<UserDTO> getByUserName(Object... keyValues) throws SQLException {
         return getJdbcIO().selectOne(getDefaultDataSource(), UserDTO.newConverter(), querySelectByUserName, keyValues);
     }
-    public Long getByUserNamePassword(Object... keyValues) throws SQLException {
-        return getJdbcIO().selectNumeric(getDefaultDataSource(), querySelectByUserNamePassword, keyValues).orElse(0L);
+    public Long countByUserNamePassword(Object... keyValues) throws SQLException {
+        return getJdbcIO().selectNumeric(getDefaultDataSource(), queryCountByUserNamePassword, keyValues).orElse(0L);
     }
 }
