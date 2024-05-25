@@ -13,7 +13,8 @@ public class JdbcTemplateConfig {
     @Bean(name = "sqliteDataSource")
     public DataSource sqliteDataSource() {
         HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl("jdbc:sqlite:D:\\MyDocuments\\OPA\\FinalProject\\CodingFactory5\\DB\\CF5.db");
+        String url = "jdbc:sqlite:src/main/resources/DBs/CF5.db";
+        dataSource.setJdbcUrl(url);
         return dataSource;
     }
     @Bean(name = "sqliteJdbcTemplate")

@@ -1,6 +1,7 @@
 package cf5.controllers;
 
-import cf5.services.AuthenticationService;
+import cf5.AppConfig;
+import cf5.services.generic.AuthenticationService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,17 +16,17 @@ public class LoginController {
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public String goToLoginPage() {
-        return "loginPage";
+        return AppConfig.ApplicationPages.LOGIN_PAGE.getCode();
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public String goToWelcomePage(@RequestParam String username, @RequestParam String password, ModelMap modelMap) {
         modelMap.put("username", StringUtils.trimToEmpty(username));
         if (authenticationService.authenticateUser(username, password)) {
-            return "welcomePage";
+            return AppConfig.ApplicationPages.WELCOME_PAGE.getCode();
         } else {
             modelMap.put("errorMessage", "Invalid credentials! Please try again");
-            return "loginPage";
+            return AppConfig.ApplicationPages.LOGIN_PAGE.getCode();
         }
     }
 }
