@@ -10,8 +10,8 @@ public abstract class AbstractController {
         if (StringUtils.isNotBlank(attributeValue)) modelMap.put(attribute, attributeValue);
     }
     protected static void putValueToModel(HttpSession httpSession, ModelMap modelMap, String attribute, String attributeValue) {
-        modelMap.put(attribute, StringUtils.trimToEmpty(attribute));
-        httpSession.setAttribute(attribute, StringUtils.trimToEmpty(attribute));
+        modelMap.put(attribute, StringUtils.trimToEmpty(attributeValue));
+        httpSession.setAttribute(attribute, StringUtils.trimToEmpty(attributeValue));
     }
 
 }
