@@ -17,4 +17,9 @@ public final class Converters {
         String formattedDateString = outputFormat.format(date);
         return outputFormat.parse(formattedDateString);
     }
+    public static String convertDateToString(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = formatter.format(date);
+        return formattedDate;
+    }
 }

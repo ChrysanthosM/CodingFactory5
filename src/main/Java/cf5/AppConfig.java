@@ -18,7 +18,10 @@ public class AppConfig {
         INDEX_PAGE("IndexPage", "redirect:/index"),
         LOGIN_PAGE("LoginPage", "redirect:/login"),
         SIGN_UP_PAGE("SignUpPage", "redirect:/signup"),
-        WELCOME_PAGE("WelcomePage", "redirect:/welcome");
+        USER_INFO_PAGE("UserInfoPage", "redirect:/userInfo"),
+        WELCOME_PAGE("WelcomePage", "redirect:/welcome"),
+        STUDENTS_LIST_PAGE("StudentsListPage", "redirect:/listStudents"),
+        ;
 
         final String page;
         final String redirect;

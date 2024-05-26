@@ -22,6 +22,12 @@ public class LoginController extends AbstractController {
     private @Autowired AuthenticationService authenticationService;
     private @Autowired UsersService usersService;
 
+    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    public String logoutUser(HttpSession httpSession, ModelMap modelMap) {
+        clearAttributes(httpSession, modelMap);
+        return AppConfig.ApplicationPages.LOGIN_PAGE.getRedirect();
+    }
+
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public String goToLoginPage(HttpSession httpSession, ModelMap modelMap) {
         putValueToModelFromSession(httpSession, modelMap, "username");
@@ -34,8 +40,11 @@ public class LoginController extends AbstractController {
         putValueToModel(httpSession, modelMap, "username", username);
         try {
             if (authenticationService.authenticateUser(username, password)) {
-                Optional<UserDTO> userDTO = usersService.getByUserName(username);
-                putValueToModel(httpSession, modelMap, "firstname", userDTO.orElseThrow().firstName());
+                UserDTO userDTO = usersService.getByUserName(username).orElseThrow();
+                putValueToModel(httpSession, modelMap, "firstname", userDTO.firstName());
+                putValueToModel(httpSession, modelMap, "lastname", userDTO.lastName());
+                putValueToModel(httpSession, modelMap, "email", userDTO.email());
+
                 return AppConfig.ApplicationPages.WELCOME_PAGE.getRedirect();
             }
         } catch (SQLException | NoSuchAlgorithmException e) {

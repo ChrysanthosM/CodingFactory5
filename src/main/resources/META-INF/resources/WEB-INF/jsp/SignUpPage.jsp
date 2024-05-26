@@ -37,10 +37,6 @@
                         <label for="lastName" class="form-label">Last Name</label>
                         <input type="text" class="form-control" id="lastname" name="lastname" value="${lastname}" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="birthDate" class="form-label">BirthDate</label>
-                        <input type="text" class="form-control datepicker" id="birthDate" name="birthDate" value="${birthDate}" required>
-                    </div>
                     <button type="submit" class="btn btn-primary">Sign Up</button>
                 </form>
             </div>

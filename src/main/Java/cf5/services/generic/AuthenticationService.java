@@ -28,8 +28,8 @@ public class AuthenticationService {
         return StringUtils.EMPTY;
     }
 
-    public void insertNewUser(@Nonnull String username, @Nonnull String password, @Nonnull String firstName, @Nonnull String lastName, @Nonnull String birthDate, @Nonnull String email) throws ParseException, SQLException, InvocationTargetException, IllegalAccessException, NoSuchAlgorithmException {
-        UserDTO userDTO = new UserDTO(0, firstName, PasswordUtils.hashPassword(password), firstName, lastName, email, Converters.convertStringToDate(birthDate));
+    public void insertNewUser(@Nonnull String username, @Nonnull String password, @Nonnull String firstName, @Nonnull String lastName, @Nonnull String email) throws SQLException, InvocationTargetException, IllegalAccessException, NoSuchAlgorithmException {
+        UserDTO userDTO = new UserDTO(0, firstName, PasswordUtils.hashPassword(password), firstName, lastName, email);
         usersService.insert(userDTO);
     }
 

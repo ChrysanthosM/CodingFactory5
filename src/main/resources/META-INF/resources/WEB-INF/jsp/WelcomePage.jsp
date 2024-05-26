@@ -10,7 +10,7 @@
             <h1 class="display-4">Welcome, ${firstname} !!!</h1>
         </div>
         <div class="alert alert-primary" role="alert">
-            <a href="/list-students" class="alert-link">Click here</a> to manage your Students.
+            <a href="/listStudents" class="alert-link">Click here</a> to manage your Students.
         </div>
     </div>
 
