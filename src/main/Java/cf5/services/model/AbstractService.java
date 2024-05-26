@@ -40,8 +40,8 @@ public abstract non-sealed class AbstractService<T> implements IBaseDAO<T> {
         List<Object> listValues = RecordUtils.getRecordValues(record);
         getJdbcIO().executeQuery(getDefaultDataSource(), query, Lists.newArrayList(listValues.stream().skip(1).collect(Collectors.toList())).toArray(), listValues.getFirst());
     }
-    protected <T> void defaultDelete(T record, String query) throws InvocationTargetException, IllegalAccessException, SQLException {
-        getJdbcIO().executeQuery(getDefaultDataSource(), query, RecordUtils.getRecordValues(record).getFirst());
+    protected void defaultDelete(int id, String query) throws SQLException {
+        getJdbcIO().executeQuery(getDefaultDataSource(), query, id);
     }
 
 

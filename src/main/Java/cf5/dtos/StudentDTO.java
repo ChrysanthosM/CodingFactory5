@@ -1,6 +1,7 @@
 package cf5.dtos;
 
 import cf5.db.loader.RowLoader;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,4 +36,5 @@ public record StudentDTO(int recId, String firstName, String lastName, Date birt
             );
         }
     }
+    public static StudentDTO getEmpty() { return  new StudentDTO(0, StringUtils.EMPTY, StringUtils.EMPTY, new Date(), StringUtils.EMPTY, StringUtils.EMPTY); }
 }

@@ -1,17 +1,22 @@
 package cf5.controllers;
 
 import cf5.AppConfig;
+import cf5.dtos.StudentDTO;
 import cf5.services.model.StudentService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.constraints.NotNull;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +33,7 @@ public class StudentsController extends AbstractController {
     }
 
     @RequestMapping(value = "listStudents", method = RequestMethod.GET)
-    public String showTodos(HttpSession httpSession, ModelMap modelMap) {
+    public String goToStudentsListPage (HttpSession httpSession, ModelMap modelMap) {
         String username = (String) httpSession.getAttribute("username");
 
         try {
@@ -40,20 +45,36 @@ public class StudentsController extends AbstractController {
         return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();
     }
 
-//    @RequestMapping(value = "/add-todo", method = RequestMethod.GET)
-//    public String showAddTodoPage(ModelMap model) {
-//        model.addAttribute("todo", new Todo(0, getLoggedInUserName(model),
-//                "Default Desc", new Date(), false));
-//        return "todo";
-//    }
-//
-//    @RequestMapping(value = "/delete-todo", method = RequestMethod.GET)
-//    public String deleteTodo(@RequestParam int id) {
-//        repository.deleteById(id);
-//        //service.deleteTodo(id);
-//        return "redirect:/list-todos";
-//    }
-//
+    @RequestMapping(value = "addStudents", method = RequestMethod.GET)
+    public String goToStudentsAddPage(ModelMap modelMap) {
+        StudentDTO studentDTO = StudentDTO.getEmpty();
+        modelMap.put("studentDTO", studentDTO);
+        return AppConfig.ApplicationPages.STUDENTS_ADD_PAGE.getPage();
+    }
+    @RequestMapping(value = "addStudents", method = RequestMethod.POST)
+    public String addStudent(ModelMap modelMap, StudentDTO studentDTO) {
+        try {
+            studentService.insert(studentDTO);
+        } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
+            modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            return AppConfig.ApplicationPages.STUDENTS_ADD_PAGE.getPage();
+        }
+
+        return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getRedirect();
+    }
+
+    @RequestMapping(value = "deleteStudent", method = RequestMethod.DELETE)
+    public String deleteTodo(HttpSession httpSession, ModelMap modelMap,
+                             @RequestParam @NotNull int id) {
+        try {
+            studentService.delete(id);
+        } catch (SQLException e) {
+            modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();
+        }
+        return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getRedirect();
+    }
+
 //    @RequestMapping(value = "/update-todo", method = RequestMethod.GET)
 //    public String showUpdateTodoPage(@RequestParam int id, ModelMap model) {
 //        Todo todo = repository.findById(id).get();
@@ -77,16 +98,5 @@ public class StudentsController extends AbstractController {
 //        return "redirect:/list-todos";
 //    }
 //
-//    @RequestMapping(value = "/add-todo", method = RequestMethod.POST)
-//    public String addTodo(ModelMap model, @Valid Todo todo, BindingResult result) {
-//        if (result.hasErrors()) {
-//            return "todo";
-//        }
-//
-//        todo.setUser(getLoggedInUserName(model));
-//        repository.save(todo);
-//		/*service.addTodo(getLoggedInUserName(model), todo.getDesc(), todo.getTargetDate(),
-//				false);*/
-//        return "redirect:/list-todos";
-//    }
+
 }

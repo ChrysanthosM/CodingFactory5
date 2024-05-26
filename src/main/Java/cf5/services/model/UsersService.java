@@ -36,8 +36,8 @@ public final class UsersService extends AbstractService<UserDTO> {
         super.defaultUpdate(userDTO, queryUpdateOne);
     }
     @Override
-    public void delete(UserDTO userDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
-        super.defaultDelete(userDTO, queryDeleteOne);
+    public void delete(int id) throws SQLException {
+        super.defaultDelete(id, queryDeleteOne);
     }
 
     public Optional<UserDTO> getByUserName(Object... keyValues) throws SQLException {

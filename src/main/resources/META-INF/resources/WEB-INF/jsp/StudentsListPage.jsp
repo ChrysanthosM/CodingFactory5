@@ -28,14 +28,14 @@
                         <td><fmt:formatDate value="${student.birthDate}" pattern="dd/MM/yyyy"/></td>
                         <td>${student.phone}</td>
                         <td>${student.email}</td>
-                        <td><a class="btn btn-success" href="/update-student?id=${student.id}">Update</a></td>
-                        <td><a class="btn btn-warning" href="/delete-student?id=${student.id}">Delete</a></td>
+                        <td><a class="btn btn-success" href="/updateStudent?id=${student.id}">Update</a></td>
+                        <td><a class="btn btn-warning" href="/deleteStudent?id=${student.id}">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
         <div>
-            <a class="btn btn-primary" href="/add-student">Add Student</a>
+            <a class="btn btn-primary" href="/addStudents">Add Student</a>
         </div>
     </div>
 

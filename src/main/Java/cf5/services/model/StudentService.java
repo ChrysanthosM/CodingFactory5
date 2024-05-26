@@ -13,8 +13,8 @@ import java.util.Optional;
 public final class StudentService extends AbstractService<StudentDTO> {
     private static final String querySelectOne = "SELECT * FROM STUDENTS WHERE ID = ?";
     private static final String querySelectAll = "SELECT * FROM STUDENTS";
-    private static final String queryInsertOne = "INSERT INTO STUDENTS (USER_ID) VALUES (?)";
-    private static final String queryUpdateOne = "UPDATE STUDENTS SET USER_ID = ? WHERE ID = ?";
+    private static final String queryInsertOne = "INSERT INTO STUDENTS (FIRSTNAME, LASTNAME, BIRTHDATE, PHONE, EMAIL) VALUES (?, ?, ?, ?, ?)";
+    private static final String queryUpdateOne = "UPDATE STUDENTS SET FIRSTNAME = ?, LASTNAME = ?, BIRTHDATE = ?, PHONE = ?, EMAIL = ? WHERE ID = ?";
     private static final String queryDeleteOne = "DELETE FROM STUDENTS WHERE ID = ?";
 
     @Override
@@ -34,7 +34,7 @@ public final class StudentService extends AbstractService<StudentDTO> {
         defaultUpdate(studentDTO, queryUpdateOne);
     }
     @Override
-    public void delete(StudentDTO studentDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
-        defaultDelete(studentDTO, queryDeleteOne);
+    public void delete(int id) throws SQLException {
+        defaultDelete(id, queryDeleteOne);
     }
 }

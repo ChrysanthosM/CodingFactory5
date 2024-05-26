@@ -33,7 +33,7 @@ public final class TeachersService extends AbstractService<TeacherDTO> {
         defaultUpdate(teacherDTO, queryUpdateOne);
     }
     @Override
-    public void delete(TeacherDTO teacherDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
-        defaultDelete(teacherDTO, queryDeleteOne);
+    public void delete(int id) throws SQLException {
+        defaultDelete(id, queryDeleteOne);
     }
 }
