@@ -1,0 +1,8 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher's class maintenace</title>
+    <!-- Bootstrap CSS -->
+    <link href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Datepicker CSS -->
+    <link href="/webjars/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+</head>

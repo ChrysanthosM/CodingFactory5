@@ -24,25 +24,27 @@ public class SignUpController extends AbstractController {
 
     @RequestMapping(value = "signup", method = RequestMethod.GET)
     public String goToSignUpPage(HttpSession httpSession, ModelMap modelMap) {
-        keepValueToModel(httpSession, modelMap, "username");
-        keepValueToModel(httpSession, modelMap, "firstName");
-        keepValueToModel(httpSession, modelMap, "lastName");
-        keepValueToModel(httpSession, modelMap, "birthDate");
-        keepValueToModel(httpSession, modelMap, "email");
+        putValueToModelFromSession(httpSession, modelMap, "username");
+        putValueToModelFromSession(httpSession, modelMap, "firstname");
+        putValueToModelFromSession(httpSession, modelMap, "lastname");
+        putValueToModelFromSession(httpSession, modelMap, "birthdate");
+        putValueToModelFromSession(httpSession, modelMap, "email");
 
         return AppConfig.ApplicationPages.SIGN_UP_PAGE.getPage();
     }
 
     @RequestMapping(value = "signup", method = RequestMethod.POST)
     public String goToWelcomePage(HttpSession httpSession, ModelMap modelMap,
-                                  @RequestParam @NotBlank @Size(min = 10, max = 50) String username,
-                                  @RequestParam @NotBlank @Size(min = 10, max = 256) String password, @RequestParam @NotBlank @Size(min = 10, max = 256) String confirmPassword,
-                                  @RequestParam @NotBlank @Size(min = 2, max = 70) String firstName, @RequestParam @NotBlank @Size(min = 2, max = 70) String lastName,
-                                  @DateTimeFormat(pattern = "dd/mm/yyyy") @RequestParam @NotNull String birthDate,
+                                  @RequestParam @NotBlank @Size(min = 10, max = 50, message="Username must be between 10 and 50 characters...") String username,
+                                  @RequestParam @NotBlank @Size(min = 10, max = 128, message="Password must be between 10 and 128 characters...") String password,
+                                  @RequestParam @NotBlank @Size(min = 10, max = 128, message="ConfirmPassword must be between 10 and 128 characters...") String confirmPassword,
+                                  @RequestParam @NotBlank @Size(min = 2, max = 70, message="FirstName must be between 2 and 70 characters...") String firstname,
+                                  @RequestParam @NotBlank @Size(min = 2, max = 70, message="LastName must be between 2 and 70 characters...") String lastname,
+                                  @RequestParam @NotNull @DateTimeFormat(pattern = "dd/mm/yyyy") String birthDate,
                                   @RequestParam @NotBlank @Email String email) {
         putValueToModel(httpSession, modelMap, "username", StringUtils.trimToEmpty(username));
-        putValueToModel(httpSession, modelMap, "firstName", StringUtils.trimToEmpty(firstName));
-        putValueToModel(httpSession, modelMap, "lastName", StringUtils.trimToEmpty(lastName));
+        putValueToModel(httpSession, modelMap, "firstname", StringUtils.trimToEmpty(firstname));
+        putValueToModel(httpSession, modelMap, "lastname", StringUtils.trimToEmpty(lastname));
         putValueToModel(httpSession, modelMap, "birthDate", StringUtils.trimToEmpty(birthDate));
         putValueToModel(httpSession, modelMap, "email", StringUtils.trimToEmpty(email));
 
@@ -58,12 +60,12 @@ public class SignUpController extends AbstractController {
         }
 
         try {
-            authenticationService.insertNewUser(username, password, firstName, lastName, birthDate, email);
+            authenticationService.insertNewUser(username, password, firstname, lastname, birthDate, email);
         } catch (Exception e) {
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.SIGN_UP_PAGE.getPage();
         }
 
-        return AppConfig.ApplicationPages.WELCOME_PAGE.getPage();
+        return AppConfig.ApplicationPages.WELCOME_PAGE.getRedirect();
     }
 }

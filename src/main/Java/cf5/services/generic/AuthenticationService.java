@@ -1,7 +1,7 @@
 package cf5.services.generic;
 
-import cf5.Utils.Converters;
-import cf5.Utils.PasswordUtils;
+import cf5.utils.Converters;
+import cf5.utils.PasswordUtils;
 import cf5.dtos.UserDTO;
 import cf5.services.model.UsersService;
 import org.apache.commons.lang3.StringUtils;

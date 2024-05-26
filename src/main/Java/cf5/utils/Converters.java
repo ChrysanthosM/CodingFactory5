@@ -1,4 +1,4 @@
-package cf5.Utils;
+package cf5.utils;
 
 import org.apache.commons.lang3.StringUtils;
 

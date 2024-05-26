@@ -1,7 +1,7 @@
 package cf5.services.model;
 
 import cf5.AppConfig;
-import cf5.Utils.RecordUtils;
+import cf5.utils.RecordUtils;
 import cf5.db.JdbcIO;
 import cf5.db.loader.RowLoader;
 import com.google.common.collect.Lists;
