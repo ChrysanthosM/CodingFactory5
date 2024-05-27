@@ -20,16 +20,16 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach items="${myStudents}" var="student">
+                <c:forEach items="${studentDTOs}" var="studentDTO">
                     <tr>
-                        <td>${student.id}</td>
-                        <td>${student.firstname}</td>
-                        <td>${student.lastname}</td>
-                        <td><fmt:formatDate value="${student.birthDate}" pattern="dd/MM/yyyy"/></td>
-                        <td>${student.phone}</td>
-                        <td>${student.email}</td>
-                        <td><a class="btn btn-success" href="/updateStudent?id=${student.id}">Update</a></td>
-                        <td><a class="btn btn-warning" href="/deleteStudent?id=${student.id}">Delete</a></td>
+                        <td>${studentDTO.recId()}</td>
+                        <td>${studentDTO.firstName()}</td>
+                        <td>${studentDTO.lastName()}</td>
+                        <td><fmt:formatDate value="${studentDTO.birthDate()}" pattern="dd/MM/yyyy"/></td>
+                        <td>${studentDTO.phone()}</td>
+                        <td>${studentDTO.email()}</td>
+                        <td><a class="btn btn-success" href="/updateStudent?id=${studentDTO.recId()}">Update</a></td>
+                        <td><a class="btn btn-warning" href="/deleteStudent?id=${studentDTO.recId()}">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>

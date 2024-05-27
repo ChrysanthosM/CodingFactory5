@@ -4,6 +4,7 @@ import cf5.AppConfig;
 import cf5.dtos.StudentDTO;
 import cf5.services.model.StudentService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,7 @@ public class StudentsController extends AbstractController {
         String username = (String) httpSession.getAttribute("username");
 
         try {
-            modelMap.put("students", studentService.getAll());
+            modelMap.put("studentDTOs", studentService.getAll());
         } catch (SQLException e) {
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.WELCOME_PAGE.getPage();
@@ -52,7 +53,10 @@ public class StudentsController extends AbstractController {
         return AppConfig.ApplicationPages.STUDENTS_ADD_PAGE.getPage();
     }
     @RequestMapping(value = "addStudents", method = RequestMethod.POST)
-    public String addStudent(ModelMap modelMap, StudentDTO studentDTO) {
+    public String addStudent(ModelMap modelMap, @Valid StudentDTO studentDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return AppConfig.ApplicationPages.STUDENTS_ADD_PAGE.getPage();
+        }
         try {
             studentService.insert(studentDTO);
         } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
@@ -62,8 +66,12 @@ public class StudentsController extends AbstractController {
 
         return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getRedirect();
     }
+    @RequestMapping("cancelAddStudents")
+    public String cancelAddStudent() {
+        return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getRedirect();
+    }
 
-    @RequestMapping(value = "deleteStudent", method = RequestMethod.DELETE)
+    @RequestMapping(value = "deleteStudent", method = RequestMethod.GET)
     public String deleteTodo(HttpSession httpSession, ModelMap modelMap,
                              @RequestParam @NotNull int id) {
         try {
