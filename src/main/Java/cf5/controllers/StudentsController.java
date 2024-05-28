@@ -5,6 +5,7 @@ import cf5.dtos.StudentDTO;
 import cf5.services.model.StudentService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 @Controller
 public class StudentsController extends AbstractController {
@@ -50,30 +52,31 @@ public class StudentsController extends AbstractController {
     public String goToStudentsAddPage(ModelMap modelMap) {
         StudentDTO studentDTO = StudentDTO.getEmpty();
         modelMap.put("studentDTO", studentDTO);
-        return AppConfig.ApplicationPages.STUDENTS_ADD_PAGE.getPage();
+        modelMap.put("submitButton", "Add");
+        return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();
     }
     @RequestMapping(value = "addStudents", method = RequestMethod.POST)
     public String addStudent(ModelMap modelMap, @Valid StudentDTO studentDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return AppConfig.ApplicationPages.STUDENTS_ADD_PAGE.getPage();
+            return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();
         }
         try {
             studentService.insert(studentDTO);
         } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
-            return AppConfig.ApplicationPages.STUDENTS_ADD_PAGE.getPage();
+            return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();
         }
 
         return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getRedirect();
     }
-    @RequestMapping("cancelAddStudents")
-    public String cancelAddStudent() {
+
+    @RequestMapping("cancelStudent")
+    public String cancelStudent() {
         return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getRedirect();
     }
 
     @RequestMapping(value = "deleteStudent", method = RequestMethod.GET)
-    public String deleteTodo(HttpSession httpSession, ModelMap modelMap,
-                             @RequestParam @NotNull int id) {
+    public String deleteStudent(ModelMap modelMap, @RequestParam @NotNull @NonNegative int id) {
         try {
             studentService.delete(id);
         } catch (SQLException e) {
@@ -83,28 +86,33 @@ public class StudentsController extends AbstractController {
         return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getRedirect();
     }
 
-//    @RequestMapping(value = "/update-todo", method = RequestMethod.GET)
-//    public String showUpdateTodoPage(@RequestParam int id, ModelMap model) {
-//        Todo todo = repository.findById(id).get();
-//        //Todo todo = service.retrieveTodo(id);
-//        model.put("todo", todo);
-//        return "todo";
-//    }
-//
-//    @RequestMapping(value = "/update-todo", method = RequestMethod.POST)
-//    public String updateTodo(ModelMap model, @Valid Todo todo, BindingResult result) {
-//
-//        if (result.hasErrors()) {
-//            return "todo";
-//        }
-//
-//        todo.setUser(getLoggedInUserName(model));
-//
-//        repository.save(todo);
-//        //service.updateTodo(todo);
-//
-//        return "redirect:/list-todos";
-//    }
-//
+    @RequestMapping(value = "updateStudent", method = RequestMethod.GET)
+    public String showUpdateStudentPage(ModelMap modelMap, @RequestParam @NotNull @NonNegative int id) {
+        try {
+            Optional<StudentDTO> studentDTO = studentService.findByKeys(id);
+            if (studentDTO.isEmpty()) return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();
+            modelMap.put("studentDTO", studentDTO.get());
+            modelMap.put("submitButton", "Update");
+        } catch (SQLException e) {
+            modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();
+        }
+        return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();
+    }
 
+    @RequestMapping(value = "updateStudent", method = RequestMethod.POST)
+    public String updateStudent(ModelMap modelMap, @Valid StudentDTO studentDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();
+        }
+
+        try {
+            studentService.update(studentDTO);
+
+        } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
+            modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();
+        }
+        return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getRedirect();
+    }
 }

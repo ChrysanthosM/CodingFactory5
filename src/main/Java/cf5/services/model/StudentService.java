@@ -18,7 +18,7 @@ public final class StudentService extends AbstractService<StudentDTO> {
     private static final String queryDeleteOne = "DELETE FROM STUDENTS WHERE ID = ?";
 
     @Override
-    public Optional<StudentDTO> get(Object... keyValues) throws SQLException {
+    public Optional<StudentDTO> findByKeys(Object... keyValues) throws SQLException {
         return super.defaultSelectOne(StudentDTO.newConverter(), querySelectOne, keyValues);
     }
     @Override

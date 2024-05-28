@@ -20,7 +20,7 @@ public final class UsersService extends AbstractService<UserDTO> {
     private static final String queryCountByUserNamePassword = "SELECT COUNT(*) FROM USERS WHERE UPPER(USERNAME) = UPPER(?) AND PASSWORD = ?";
 
     @Override
-    public Optional<UserDTO> get(Object... keyValues) throws SQLException {
+    public Optional<UserDTO> findByKeys(Object... keyValues) throws SQLException {
         return super.defaultSelectOne(UserDTO.newConverter(), querySelectOne, keyValues);
     }
     @Override

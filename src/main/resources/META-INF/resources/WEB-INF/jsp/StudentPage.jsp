@@ -47,8 +47,8 @@
 
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <button type="submit" class="btn btn-success">Add</button>
-                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/cancelAddStudents';">Cancel</button>
+                    <button type="submit" class="btn btn-success">${submitButton}</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/cancelStudent';">Cancel</button>
                 </div>
             </div>
         </form:form>
