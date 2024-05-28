@@ -29,7 +29,7 @@
                         <td>${studentDTO.phone()}</td>
                         <td>${studentDTO.email()}</td>
                         <td><a class="btn btn-success" href="/updateStudent?id=${studentDTO.recId()}">Update</a></td>
-                        <td><a class="btn btn-warning" href="/deleteStudent?id=${studentDTO.recId()}">Delete</a></td>
+                        <td><a class="btn btn-warning" href="/deleteStudent?id=${studentDTO.recId()}" onclick="return confirmDelete()">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
@@ -38,7 +38,13 @@
             <a class="btn btn-primary" href="/addStudents">Add Student</a>
         </div>
     </div>
-
-    <%@ include file="common/footer.jspf"%>
 </body>
+
+<%@ include file="common/footer.jspf"%>
+
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this student?");
+    }
+</script>
 </html>

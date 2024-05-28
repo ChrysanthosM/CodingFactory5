@@ -14,7 +14,6 @@
             <a class="btn btn-primary btn-lg" href="/login" role="button">Go to Login</a>
         </div>
     </div>
-
-    <%@ include file="common/footer.jspf"%>
 </body>
+<%@ include file="common/footer.jspf"%>
 </html>

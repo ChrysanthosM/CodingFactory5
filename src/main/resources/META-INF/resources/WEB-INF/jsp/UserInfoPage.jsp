@@ -39,7 +39,6 @@
             </div>
         </div>
     </div>
-
-    <%@ include file="common/footer.jspf"%>
 </body>
+<%@ include file="common/footer.jspf"%>
 </html>
