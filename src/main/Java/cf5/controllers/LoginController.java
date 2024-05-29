@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.constraints.NotBlank;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.Optional;
 
 @Controller
 public class LoginController extends AbstractController {

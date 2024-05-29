@@ -25,9 +25,7 @@ public class ApplicationRun {
 
     @Bean
     public CommandLineRunner openBrowserOnStart() {
-        return args -> {
-            openHomePage("http://localhost:8080");
-        };
+        return args -> openHomePage("http://localhost:8080");
     }
 
     private static void openHomePage(String url) {

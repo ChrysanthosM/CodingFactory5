@@ -1,6 +1,5 @@
 package cf5.services.generic;
 
-import cf5.utils.Converters;
 import cf5.utils.PasswordUtils;
 import cf5.dtos.UserDTO;
 import cf5.services.model.UsersService;
@@ -12,7 +11,6 @@ import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Optional;
 
 @Service
