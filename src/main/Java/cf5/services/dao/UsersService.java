@@ -1,6 +1,6 @@
 package cf5.services.dao;
 
-import cf5.dtos.UserDTO;
+import cf5.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;

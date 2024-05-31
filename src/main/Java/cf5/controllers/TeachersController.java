@@ -1,7 +1,7 @@
 package cf5.controllers;
 
 import cf5.AppConfig;
-import cf5.dtos.TeacherDTO;
+import cf5.dto.TeacherDTO;
 import cf5.services.dao.TeachersService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -50,7 +50,7 @@ public class TeachersController extends AbstractController {
 
     @RequestMapping(value = "addTeachers", method = RequestMethod.GET)
     public String goToTeachersAddPage(ModelMap modelMap) {
-        TeacherDTO TeacherDTO = cf5.dtos.TeacherDTO.getEmpty();
+        TeacherDTO TeacherDTO = cf5.dto.TeacherDTO.getEmpty();
         modelMap.put("TeacherDTO", TeacherDTO);
         modelMap.put("submitButton", "Add");
         return AppConfig.ApplicationPages.TEACHER_PAGE.getPage();

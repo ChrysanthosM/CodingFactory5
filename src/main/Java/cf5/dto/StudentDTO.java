@@ -1,4 +1,4 @@
-package cf5.dtos;
+package cf5.dto;
 
 import cf5.db.loader.RowLoader;
 import jakarta.validation.constraints.Email;
