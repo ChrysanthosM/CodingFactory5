@@ -1,4 +1,4 @@
-package cf5.services.model;
+package cf5.services.dao;
 
 import cf5.AppConfig;
 import cf5.utils.RecordUtils;

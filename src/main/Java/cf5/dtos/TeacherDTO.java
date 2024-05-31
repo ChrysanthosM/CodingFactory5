@@ -26,4 +26,6 @@ public record TeacherDTO(int recId, int USER_ID) {
             );
         }
     }
+
+    public static TeacherDTO getEmpty() { return new TeacherDTO(0, 0); }
 }

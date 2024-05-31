@@ -1,4 +1,4 @@
-package cf5.services.model;
+package cf5.services.dao;
 
 import cf5.dtos.UserDTO;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package cf5.services.model;
+package cf5.services.dao;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;

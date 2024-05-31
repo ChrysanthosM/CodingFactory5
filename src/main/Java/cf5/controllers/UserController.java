@@ -2,7 +2,7 @@ package cf5.controllers;
 
 import cf5.AppConfig;
 import cf5.services.generic.AuthenticationService;
-import cf5.services.model.UsersService;
+import cf5.services.dao.UsersService;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

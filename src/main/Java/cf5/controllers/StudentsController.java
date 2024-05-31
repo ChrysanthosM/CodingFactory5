@@ -2,7 +2,7 @@ package cf5.controllers;
 
 import cf5.AppConfig;
 import cf5.dtos.StudentDTO;
-import cf5.services.model.StudentService;
+import cf5.services.dao.StudentService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.checkerframework.checker.index.qual.NonNegative;

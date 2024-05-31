@@ -12,7 +12,7 @@
         </ul>
         <ul class="navbar-nav ml-auto"> <!-- Align items to the right -->
             <li class="nav-item">
-                <a class="nav-link" href="/userInfo">${username}</a>
+                <a class="nav-link" href="/userInfo">User Info (${username})</a>
             </li>
         </ul>
     </div>

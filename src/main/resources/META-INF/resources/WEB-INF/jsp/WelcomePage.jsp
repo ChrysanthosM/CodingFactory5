@@ -9,10 +9,17 @@
         <div class="jumbotron">
             <h1 class="display-4">Welcome, ${firstname} !!!</h1>
         </div>
-        <div class="alert alert-primary" role="alert">
-            <a href="/listStudents" class="alert-link">Click here</a> to manage your Students.
+        <div class="mt-4">
+            <button class="btn btn-secondary btn-sm w-50 mb-2" onclick="location.href='/listClasses'">Classes</button>
+        </div>
+        <div class="mt-4">
+            <button class="btn btn-secondary btn-sm w-50" onclick="location.href='/listStudents'">Students</button>
+        </div>
+        <div class="mt-4">
+            <button class="btn btn-secondary btn-sm w-50" onclick="location.href='/listTeachers'">Teachers</button>
         </div>
     </div>
+
 </body>
 <%@ include file="common/footer.jspf"%>
 </html>

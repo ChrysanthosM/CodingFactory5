@@ -21,7 +21,9 @@ public class AppConfig {
         USER_INFO_PAGE("UserInfoPage", "redirect:/userInfo"),
         WELCOME_PAGE("WelcomePage", "redirect:/welcome"),
         STUDENTS_LIST_PAGE("StudentsListPage", "redirect:/listStudents"),
+        TEACHERS_LIST_PAGE("TeachersListPage", "redirect:/listTeachers"),
         STUDENT_PAGE("StudentPage", null),
+        TEACHER_PAGE("TeacherPage", null),
         ;
 
         final String page;

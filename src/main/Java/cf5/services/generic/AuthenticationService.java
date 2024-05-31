@@ -2,7 +2,7 @@ package cf5.services.generic;
 
 import cf5.utils.PasswordUtils;
 import cf5.dtos.UserDTO;
-import cf5.services.model.UsersService;
+import cf5.services.dao.UsersService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
