@@ -6,7 +6,7 @@
 
     <!-- Main content -->
     <div class="container mt-5">
-        <form:form method="post" modelAttribute="studentDTO" class="mt-4">
+        <form:form method="post" modelAttribute="student" class="mt-4">
             <form:hidden path="recId" />
 
             <div class="col-md-6">

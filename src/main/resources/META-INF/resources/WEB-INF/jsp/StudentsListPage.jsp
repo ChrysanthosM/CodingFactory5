@@ -20,16 +20,16 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach items="${studentDTOs}" var="studentDTO">
+                <c:forEach items="${studentsList}" var="student">
                     <tr>
-                        <td>${studentDTO.recId()}</td>
-                        <td>${studentDTO.firstName()}</td>
-                        <td>${studentDTO.lastName()}</td>
-                        <td><fmt:formatDate value="${studentDTO.birthDate()}" pattern="dd/MM/yyyy"/></td>
-                        <td>${studentDTO.phone()}</td>
-                        <td>${studentDTO.email()}</td>
-                        <td><a class="btn btn-success" href="/updateStudent?id=${studentDTO.recId()}">Update</a></td>
-                        <td><a class="btn btn-warning" href="/deleteStudent?id=${studentDTO.recId()}" onclick="return confirmDelete()">Delete</a></td>
+                        <td>${student.recId()}</td>
+                        <td>${student.firstName()}</td>
+                        <td>${student.lastName()}</td>
+                        <td><fmt:formatDate value="${student.birthDate()}" pattern="dd/MM/yyyy"/></td>
+                        <td>${student.phone()}</td>
+                        <td>${student.email()}</td>
+                        <td><a class="btn btn-success" href="/updateStudent?id=${student.recId()}">Update</a></td>
+                        <td><a class="btn btn-warning" href="/deleteStudent?id=${student.recId()}" onclick="return confirmDelete()">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
