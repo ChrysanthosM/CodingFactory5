@@ -1,7 +1,6 @@
 package cf5.services.dao;
 
 import cf5.dto.LessonDTO;
-import cf5.dto.TeacherDTO;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;

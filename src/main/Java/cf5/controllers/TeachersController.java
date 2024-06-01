@@ -5,7 +5,6 @@ import cf5.dto.TeacherDTO;
 import cf5.dto.UserDTO;
 import cf5.model.Teacher;
 import cf5.model.Teachers;
-import cf5.model.User;
 import cf5.model.UserForCombo;
 import cf5.services.dao.TeachersService;
 import cf5.services.dao.UsersService;
@@ -37,9 +36,9 @@ public class TeachersController extends AbstractController {
     @RequestMapping(value = "listTeachers", method = RequestMethod.GET)
     public String listTeachers (ModelMap modelMap) {
         try {
-            List<TeacherDTO> teacherDTOs = teachersService.getAll();
-            if (CollectionUtils.isEmpty(teacherDTOs)) return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
-            List<Teachers> teachersList = teacherDTOs.stream().map(Teachers::convertFrom).toList();
+            List<TeacherDTO> teacherDTOS = teachersService.getAll();
+            if (CollectionUtils.isEmpty(teacherDTOS)) return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
+            List<Teachers> teachersList = teacherDTOS.stream().map(Teachers::convertFrom).toList();
             modelMap.put("teachersList", teachersList);
         } catch (SQLException e) {
             log.atError().log("listTeachers failed: " + e.getMessage());

@@ -1,12 +1,15 @@
 package cf5.services.dao;
 
 import cf5.dto.TeacherDTO;
+import cf5.utils.RecordUtils;
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public final class TeachersService extends AbstractService<TeacherDTO> {
@@ -33,11 +36,11 @@ public final class TeachersService extends AbstractService<TeacherDTO> {
     }
     @Override
     public void insert(TeacherDTO teacherDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
-        super.defaultInsert(teacherDTO, queryInsertOne);
+        getJdbcIO().executeQuery(getDefaultDataSource(), queryInsertOne, Lists.newArrayList(teacherDTO.userId(), teacherDTO.email(), teacherDTO.email(), teacherDTO.recId()).toArray());
     }
     @Override
     public void update(TeacherDTO teacherDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
-        defaultUpdate(teacherDTO, queryUpdateOne);
+        getJdbcIO().executeQuery(getDefaultDataSource(), queryUpdateOne, Lists.newArrayList(teacherDTO.userId(), teacherDTO.email(), teacherDTO.email(), teacherDTO.recId()).toArray());
     }
     @Override
     public void delete(int id) throws SQLException {

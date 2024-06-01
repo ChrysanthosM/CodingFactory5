@@ -1,12 +1,7 @@
 package cf5.model;
 
 import cf5.dto.TeacherDTO;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.StringUtils;
-import org.checkerframework.checker.index.qual.NonNegative;
 
 public record Teachers(int recId,
                        int userId,
