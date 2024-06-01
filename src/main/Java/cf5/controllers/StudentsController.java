@@ -56,14 +56,16 @@ public class StudentsController extends AbstractController {
 
     @RequestMapping(value = "addStudent", method = RequestMethod.GET)
     public String addStudents(ModelMap modelMap) {
-        Student student = Student.getEmpty();
-        modelMap.put("student", student);
+        modelMap.put("student", Student.getEmpty());
         modelMap.put("submitButton", "Add");
         return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();
     }
     @RequestMapping(value = "addStudent", method = RequestMethod.POST)
     public String addStudents(ModelMap modelMap, @Valid Student student, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) { return AppConfig.ApplicationPages.STUDENT_PAGE.getPage(); }
+        if (bindingResult.hasErrors()) {
+            modelMap.put("submitButton", "Add");
+            return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();
+        }
         try {
             studentService.insert(student.toDTO());
         } catch (SQLException | InvocationTargetException | IllegalAccessException e) {

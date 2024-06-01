@@ -33,7 +33,7 @@ public class LoggingConfig {
         // Create Root Logger
         Logger rootLogger = context.getLogger(Logger.ROOT_LOGGER_NAME);
         rootLogger.addAppender(consoleAppender);
-        rootLogger.setLevel(Level.ALL);
+        rootLogger.setLevel(Level.DEBUG);
 
         // Print logback status
         StatusPrinter.print(context);

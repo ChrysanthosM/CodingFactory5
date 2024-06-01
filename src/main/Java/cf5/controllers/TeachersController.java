@@ -2,9 +2,14 @@ package cf5.controllers;
 
 import cf5.AppConfig;
 import cf5.dto.TeacherDTO;
+import cf5.dto.UserDTO;
 import cf5.model.Teacher;
-import cf5.model.Teacher;
+import cf5.model.Teachers;
+import cf5.model.User;
+import cf5.model.UserForCombo;
 import cf5.services.dao.TeachersService;
+import cf5.services.dao.UsersService;
+import com.google.common.collect.Lists;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -26,14 +31,15 @@ import java.util.Optional;
 @Controller
 @Slf4j
 public class TeachersController extends AbstractController {
-    private @Autowired TeachersService TeachersService;
+    private @Autowired TeachersService teachersService;
+    private @Autowired UsersService usersService;
 
     @RequestMapping(value = "listTeachers", method = RequestMethod.GET)
     public String listTeachers (ModelMap modelMap) {
         try {
-            List<TeacherDTO> teacherDTOs = TeachersService.getAll();
+            List<TeacherDTO> teacherDTOs = teachersService.getAll();
             if (CollectionUtils.isEmpty(teacherDTOs)) return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
-            List<Teacher> teachersList = teacherDTOs.stream().map(Teacher::convertFrom).toList();
+            List<Teachers> teachersList = teacherDTOs.stream().map(Teachers::convertFrom).toList();
             modelMap.put("teachersList", teachersList);
         } catch (SQLException e) {
             log.atError().log("listTeachers failed: " + e.getMessage());
@@ -45,18 +51,30 @@ public class TeachersController extends AbstractController {
 
     @RequestMapping(value = "addTeacher", method = RequestMethod.GET)
     public String addTeacher(ModelMap modelMap) {
-        Teacher teacher = Teacher.getEmpty();
-        modelMap.put("teacher", teacher);
+        List<UserForCombo> usersList = Lists.newArrayList();
+        try {
+            List<UserDTO> userDTOs = usersService.getAll();
+            if (CollectionUtils.isNotEmpty(userDTOs)) usersList = userDTOs.stream().map(UserForCombo::convertFrom).toList();
+        } catch (SQLException e) {
+            log.atError().log("GET addTeacher failed: " + e.getMessage());
+            modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
+        }
+        modelMap.put("teacher", Teacher.getEmpty());
+        modelMap.put("usersList", usersList);
         modelMap.put("submitButton", "Add");
         return AppConfig.ApplicationPages.TEACHER_PAGE.getPage();
     }
     @RequestMapping(value = "addTeacher", method = RequestMethod.POST)
-    public String addTeacher(ModelMap modelMap, @Valid Teacher Teacher, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) { return AppConfig.ApplicationPages.TEACHER_PAGE.getPage(); }
+    public String addTeacher(ModelMap modelMap, @Valid Teacher teacher, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            modelMap.put("submitButton", "Add");
+            return AppConfig.ApplicationPages.TEACHER_PAGE.getPage();
+        }
         try {
-            TeachersService.insert(Teacher.toDTO());
+            teachersService.insert(teacher.toDTO());
         } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
-            log.atError().log("addTeacher failed: " + e.getMessage());
+            log.atError().log("POST addTeacher failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.TEACHER_PAGE.getPage();
         }
@@ -65,13 +83,13 @@ public class TeachersController extends AbstractController {
 
     @RequestMapping("cancelTeacher")
     public String cancelTeacher() {
-        return AppConfig.ApplicationPages.TEACHER_PAGE.getRedirect();
+        return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getRedirect();
     }
 
     @RequestMapping(value = "deleteTeacher", method = RequestMethod.GET)
     public String deleteTeacher(ModelMap modelMap, @RequestParam @NotNull @NonNegative int id) {
         try {
-            TeachersService.delete(id);
+            teachersService.delete(id);
         } catch (SQLException e) {
             log.atError().log("deleteTeacher failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
@@ -83,7 +101,7 @@ public class TeachersController extends AbstractController {
     @RequestMapping(value = "updateTeacher", method = RequestMethod.GET)
     public String updateTeacher(ModelMap modelMap, @RequestParam @NotNull @NonNegative int id) {
         try {
-            Optional<TeacherDTO> teacherDTO = TeachersService.findByKeys(id);
+            Optional<TeacherDTO> teacherDTO = teachersService.findByKeys(id);
             if (teacherDTO.isEmpty()) return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
             Teacher teacher = Teacher.convertFrom(teacherDTO.orElseThrow());
             modelMap.put("teacher", teacher);
@@ -103,7 +121,7 @@ public class TeachersController extends AbstractController {
             return AppConfig.ApplicationPages.TEACHER_PAGE.getPage();
         }
         try {
-            TeachersService.update(teacher.toDTO());
+            teachersService.update(teacher.toDTO());
         } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
             log.atError().log("POST updateTeacher failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");

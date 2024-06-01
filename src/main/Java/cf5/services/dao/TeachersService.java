@@ -10,10 +10,17 @@ import java.util.Optional;
 
 @Service
 public final class TeachersService extends AbstractService<TeacherDTO> {
-    private static final String querySelectOne = "SELECT * FROM TEACHERS WHERE ID = ?";
-    private static final String querySelectAll = "SELECT * FROM TEACHERS";
-    private static final String queryInsertOne = "INSERT INTO TEACHERS (USER_ID) VALUES (?)";
-    private static final String queryUpdateOne = "UPDATE TEACHERS SET USER_ID = ? WHERE ID = ?";
+    private static final String querySelectOne =
+            "SELECT T.ID, T.USER_ID, U.FIRSTNAME, U.LASTNAME, T.EMAIL, T.PHONE " +
+            "FROM TEACHERS T " +
+            "LEFT JOIN USERS U ON T.USER_ID = U.ID " +
+            "WHERE ID = ?";
+    private static final String querySelectAll =
+            "SELECT T.ID, T.USER_ID, U.FIRSTNAME, U.LASTNAME, T.EMAIL, T.PHONE " +
+            "FROM TEACHERS T " +
+            "LEFT JOIN USERS U ON T.USER_ID = U.ID";
+    private static final String queryInsertOne = "INSERT INTO TEACHERS (USER_ID, EMAIL, PHONE) VALUES (?, ?, ?)";
+    private static final String queryUpdateOne = "UPDATE TEACHERS SET USER_ID = ?, EMAIL = ?, PHONE = ? WHERE ID = ?";
     private static final String queryDeleteOne = "DELETE FROM TEACHERS WHERE ID = ?";
 
     @Override

@@ -44,8 +44,7 @@ public class LessonsController extends AbstractController {
 
     @RequestMapping(value = "addLesson", method = RequestMethod.GET)
     public String addLesson(ModelMap modelMap) {
-        Lesson lesson = Lesson.getEmpty();
-        modelMap.put("lesson", lesson);
+        modelMap.put("lesson", Lesson.getEmpty());
         modelMap.put("submitButton", "Add");
         return AppConfig.ApplicationPages.LESSON_PAGE.getPage();
     }
