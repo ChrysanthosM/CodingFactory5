@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public record TeacherDTO(int recId, int USER_ID) {
+public record TeacherDTO(int recId, int userId) {
     public static LoadDTO newConverter() { return new LoadDTO(); }
     public static class LoadDTO extends RowLoader<TeacherDTO> {
         @Override
@@ -26,6 +26,4 @@ public record TeacherDTO(int recId, int USER_ID) {
             );
         }
     }
-
-    public static TeacherDTO getEmpty() { return new TeacherDTO(0, 0); }
 }

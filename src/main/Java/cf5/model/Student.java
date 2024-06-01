@@ -9,8 +9,8 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import java.util.Date;
 
 public record Student(@NonNegative int recId,
-                      @NotBlank @Size(min = 2, max = 70, message = "FirstName must be between 10 and 70 characters...") String firstName,
-                      @NotBlank @Size(min = 2, max = 70, message = "LastName must be between 10 and 70 characters...") String lastName,
+                      @NotBlank @Size(min = 2, max = 70, message = "FirstName must be between 2 and 70 characters...") String firstName,
+                      @NotBlank @Size(min = 2, max = 70, message = "LastName must be between 2 and 70 characters...") String lastName,
                       @Nonnull @Past(message = "Birth date must be in the past") Date birthDate,
                       @NotBlank @Size(min = 10, max = 10, message = "Phone must be 10 characters...") @Pattern(regexp = "\\d+", message = "Phone must contain only digits") String phone,
                       @NotBlank @Email String email) {

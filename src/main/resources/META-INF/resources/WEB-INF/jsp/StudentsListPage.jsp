@@ -35,7 +35,7 @@
             </tbody>
         </table>
         <div>
-            <a class="btn btn-primary" href="/addStudents">Add Student</a>
+            <a class="btn btn-primary" href="/addStudent">Add Student</a>
         </div>
     </div>
 </body>

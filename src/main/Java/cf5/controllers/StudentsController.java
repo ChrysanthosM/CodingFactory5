@@ -40,29 +40,29 @@ public class StudentsController extends AbstractController {
     }
 
     @RequestMapping(value = "listStudents", method = RequestMethod.GET)
-    public String goToStudentsListPage (HttpSession httpSession, ModelMap modelMap) {
+    public String listStudents (ModelMap modelMap) {
         try {
             List<StudentDTO> studentDTOs = studentService.getAll();
             if (CollectionUtils.isEmpty(studentDTOs)) return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();
             List<Student> studentsList = studentDTOs.stream().map(Student::convertFrom).toList();
             modelMap.put("studentsList", studentsList);
         } catch (SQLException e) {
-            log.atError().log("goToStudentsListPage failed: " + e.getMessage());
+            log.atError().log("listStudents failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.WELCOME_PAGE.getPage();
         }
         return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();
     }
 
-    @RequestMapping(value = "addStudents", method = RequestMethod.GET)
-    public String goToStudentsAddPage(ModelMap modelMap) {
+    @RequestMapping(value = "addStudent", method = RequestMethod.GET)
+    public String addStudents(ModelMap modelMap) {
         Student student = Student.getEmpty();
         modelMap.put("student", student);
         modelMap.put("submitButton", "Add");
         return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();
     }
-    @RequestMapping(value = "addStudents", method = RequestMethod.POST)
-    public String addStudent(ModelMap modelMap, @Valid Student student, BindingResult bindingResult) {
+    @RequestMapping(value = "addStudent", method = RequestMethod.POST)
+    public String addStudents(ModelMap modelMap, @Valid Student student, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) { return AppConfig.ApplicationPages.STUDENT_PAGE.getPage(); }
         try {
             studentService.insert(student.toDTO());
@@ -92,7 +92,7 @@ public class StudentsController extends AbstractController {
     }
 
     @RequestMapping(value = "updateStudent", method = RequestMethod.GET)
-    public String showUpdateStudentPage(ModelMap modelMap, @RequestParam @NotNull @NonNegative int id) {
+    public String updateStudent(ModelMap modelMap, @RequestParam @NotNull @NonNegative int id) {
         try {
             Optional<StudentDTO> studentDTO = studentService.findByKeys(id);
             if (studentDTO.isEmpty()) return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();
@@ -100,7 +100,7 @@ public class StudentsController extends AbstractController {
             modelMap.put("student", student);
             modelMap.put("submitButton", "Update");
         } catch (SQLException e) {
-            log.atError().log("showUpdateStudentPage failed: " + e.getMessage());
+            log.atError().log("GET updateStudent failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();
         }
@@ -116,7 +116,7 @@ public class StudentsController extends AbstractController {
         try {
             studentService.update(student.toDTO());
         } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
-            log.atError().log("updateStudent failed: " + e.getMessage());
+            log.atError().log("POST updateStudent failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();
         }

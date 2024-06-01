@@ -10,7 +10,7 @@
             <h1 class="display-4">Welcome, ${firstname} !!!</h1>
         </div>
         <div class="mt-4">
-            <button class="btn btn-secondary btn-sm w-50 mb-2" onclick="location.href='/listClasses'">Classes</button>
+            <button class="btn btn-secondary btn-sm w-50 mb-2" onclick="location.href='/listLessons'">Lessons</button>
         </div>
         <div class="mt-4">
             <button class="btn btn-secondary btn-sm w-50" onclick="location.href='/listStudents'">Students</button>
