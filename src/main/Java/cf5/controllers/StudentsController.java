@@ -3,8 +3,7 @@ package cf5.controllers;
 import cf5.AppConfig;
 import cf5.dto.StudentDTO;
 import cf5.model.Student;
-import cf5.services.dao.StudentService;
-import jakarta.servlet.http.HttpSession;
+import cf5.services.dao.StudentsService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -32,7 +31,7 @@ import java.util.Optional;
 @Controller
 @Slf4j
 public class StudentsController extends AbstractController {
-    private @Autowired StudentService studentService;
+    private @Autowired StudentsService studentsService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -43,7 +42,7 @@ public class StudentsController extends AbstractController {
     @RequestMapping(value = "listStudents", method = RequestMethod.GET)
     public String listStudents (ModelMap modelMap) {
         try {
-            List<StudentDTO> studentDTOs = studentService.getAll();
+            List<StudentDTO> studentDTOs = studentsService.getAll();
             if (CollectionUtils.isEmpty(studentDTOs)) return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();
             List<Student> studentsList = studentDTOs.stream().map(Student::convertFrom).toList();
             modelMap.put("studentsList", studentsList);
@@ -68,7 +67,7 @@ public class StudentsController extends AbstractController {
             return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();
         }
         try {
-            studentService.insert(student.toDTO());
+            studentsService.insert(student.toDTO());
         } catch (ValidationException e) {
             modelMap.put("errorMessage", "Validation Error: " + e.getMessage());
             modelMap.put("submitButton", "Add");
@@ -90,7 +89,7 @@ public class StudentsController extends AbstractController {
     @RequestMapping(value = "deleteStudent", method = RequestMethod.GET)
     public String deleteStudent(ModelMap modelMap, @RequestParam @NotNull @NonNegative int id) {
         try {
-            studentService.delete(id);
+            studentsService.delete(id);
         } catch (SQLException e) {
             log.atError().log("deleteStudent failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
@@ -102,7 +101,7 @@ public class StudentsController extends AbstractController {
     @RequestMapping(value = "updateStudent", method = RequestMethod.GET)
     public String updateStudent(ModelMap modelMap, @RequestParam @NotNull @NonNegative int id) {
         try {
-            Optional<StudentDTO> studentDTO = studentService.findByKeys(id);
+            Optional<StudentDTO> studentDTO = studentsService.findByKeys(id);
             if (studentDTO.isEmpty()) return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();
             Student student = Student.convertFrom(studentDTO.orElseThrow());
             modelMap.put("student", student);
@@ -123,7 +122,7 @@ public class StudentsController extends AbstractController {
             return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();
         }
         try {
-            studentService.update(student.toDTO());
+            studentsService.update(student.toDTO());
         } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
             log.atError().log("POST updateStudent failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");

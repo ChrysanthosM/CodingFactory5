@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public record UserDTO(int recId, String userName, String password, String firstName, String lastName, String email) {
+public record UserDTO(int recId, String userName, String password, String firstName, String lastName, String email, String phone, int roleId) {
     public static LoadDTO newConverter() { return new LoadDTO(); }
     public static class LoadDTO extends RowLoader<UserDTO> {
         @Override
@@ -19,7 +19,9 @@ public record UserDTO(int recId, String userName, String password, String firstN
                     resultSet.getString("PASSWORD"),
                     resultSet.getString("FIRSTNAME"),
                     resultSet.getString("LASTNAME"),
-                    resultSet.getString("EMAIL")
+                    resultSet.getString("EMAIL"),
+                    resultSet.getString("PHONE"),
+                    resultSet.getInt("ROLE_ID")
             );
         }
         @Override
@@ -30,7 +32,9 @@ public record UserDTO(int recId, String userName, String password, String firstN
                     RowLoader.extractValue(columnNamesValues, "PASSWORD", String.class),
                     RowLoader.extractValue(columnNamesValues, "FIRSTNAME", String.class),
                     RowLoader.extractValue(columnNamesValues, "LASTNAME", String.class),
-                    RowLoader.extractValue(columnNamesValues, "EMAIL", String.class)
+                    RowLoader.extractValue(columnNamesValues, "EMAIL", String.class),
+                    RowLoader.extractValue(columnNamesValues, "PHONE", String.class),
+                    RowLoader.extractValue(columnNamesValues, "ROLE_ID", Integer.class)
             );
         }
     }

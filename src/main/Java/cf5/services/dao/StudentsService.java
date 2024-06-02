@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public final class StudentService extends AbstractService<StudentDTO> {
+public final class StudentsService extends AbstractService<StudentDTO> {
     private static final String querySelectOne = "SELECT * FROM STUDENTS WHERE ID = ?";
     private static final String querySelectAll = "SELECT * FROM STUDENTS";
     private static final String queryInsertOne = "INSERT INTO STUDENTS (FIRSTNAME, LASTNAME, BIRTHDATE, PHONE, EMAIL) VALUES (?, ?, ?, ?, ?)";

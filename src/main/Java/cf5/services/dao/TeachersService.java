@@ -1,7 +1,6 @@
 package cf5.services.dao;
 
 import cf5.dto.TeacherDTO;
-import cf5.utils.RecordUtils;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +9,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public final class TeachersService extends AbstractService<TeacherDTO> {

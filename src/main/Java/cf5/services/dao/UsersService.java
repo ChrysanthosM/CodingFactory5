@@ -12,8 +12,8 @@ import java.util.Optional;
 public final class UsersService extends AbstractService<UserDTO> {
     private static final String querySelectOne = "SELECT * FROM USERS WHERE ID = ?";
     private static final String querySelectAll = "SELECT * FROM USERS";
-    private static final String queryInsertOne = "INSERT INTO USERS (USERNAME, PASSWORD, FIRSTNAME, LASTNAME, EMAIL) VALUES (?, ?, ?, ?, ?)";
-    private static final String queryUpdateOne = "UPDATE USERS SET USERNAME = ?, PASSWORD = ?, FIRSTNAME = ?, LASTNAME = ?, EMAIL = ? WHERE ID = ?";
+    private static final String queryInsertOne = "INSERT INTO USERS (USERNAME, PASSWORD, FIRSTNAME, LASTNAME, EMAIL, PHONE, ROLE_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String queryUpdateOne = "UPDATE USERS SET USERNAME = ?, PASSWORD = ?, FIRSTNAME = ?, LASTNAME = ?, EMAIL = ?, PHONE = ?, ROLE_ID = ? WHERE ID = ?";
     private static final String queryDeleteOne = "DELETE FROM USERS WHERE ID = ?";
 
     private static final String querySelectByUserName = "SELECT * FROM USERS WHERE USERNAME = ?";

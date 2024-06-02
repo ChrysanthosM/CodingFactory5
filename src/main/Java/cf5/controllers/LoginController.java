@@ -22,20 +22,20 @@ public class LoginController extends AbstractController {
     private @Autowired UsersService usersService;
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public String logoutUser(HttpSession httpSession, ModelMap modelMap) {
+    public String logout(HttpSession httpSession, ModelMap modelMap) {
         clearAttributes(httpSession, modelMap);
         return AppConfig.ApplicationPages.LOGIN_PAGE.getRedirect();
     }
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
-    public String goToLoginPage(HttpSession httpSession, ModelMap modelMap) {
+    public String login(HttpSession httpSession, ModelMap modelMap) {
         putValueToModelFromSession(httpSession, modelMap, "username");
         return AppConfig.ApplicationPages.LOGIN_PAGE.getPage();
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public String goToWelcomePage(HttpSession httpSession, ModelMap modelMap,
-                                  @RequestParam @NotBlank String username, @RequestParam @NotBlank String password) {
+    public String login(HttpSession httpSession, ModelMap modelMap,
+                        @RequestParam @NotBlank String username, @RequestParam @NotBlank String password) {
         putValueToModel(httpSession, modelMap, "username", username);
         try {
             if (authenticationService.authenticateUser(username, password)) {
@@ -43,7 +43,7 @@ public class LoginController extends AbstractController {
                 putValueToModel(httpSession, modelMap, "firstname", userDTO.firstName());
                 putValueToModel(httpSession, modelMap, "lastname", userDTO.lastName());
                 putValueToModel(httpSession, modelMap, "email", userDTO.email());
-
+                putValueToModel(httpSession, modelMap, "roleId", userDTO.roleId());
                 return AppConfig.ApplicationPages.WELCOME_PAGE.getRedirect();
             }
         } catch (SQLException | NoSuchAlgorithmException e) {

@@ -26,8 +26,8 @@ public class AuthenticationService {
         return StringUtils.EMPTY;
     }
 
-    public void insertNewUser(@Nonnull String username, @Nonnull String password, @Nonnull String firstName, @Nonnull String lastName, @Nonnull String email) throws SQLException, InvocationTargetException, IllegalAccessException, NoSuchAlgorithmException {
-        UserDTO userDTO = new UserDTO(0, username, PasswordUtils.hashPassword(password), firstName, lastName, email);
+    public void insertNewUser(@Nonnull String username, @Nonnull String password, @Nonnull String firstName, @Nonnull String lastName, @Nonnull String email, @Nonnull String phone, int roleId) throws SQLException, InvocationTargetException, IllegalAccessException, NoSuchAlgorithmException {
+        UserDTO userDTO = new UserDTO(0, username, PasswordUtils.hashPassword(password), firstName, lastName, email, phone, roleId);
         usersService.insert(userDTO);
     }
 
