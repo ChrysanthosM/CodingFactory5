@@ -15,10 +15,14 @@
                     <label class="form-label">Username:</label>
                     <p class="form-control-static">${username}</p>
                 </div>
-                <div class="border-bottom mb-3 pb-3">
-                    <label class="form-label">Email:</label>
-                    <p class="form-control-static">${email}</p>
-                </div>
+                
+                <c:if test="${roleId != 0}">
+                    <div class="border-bottom mb-3 pb-3">
+                        <label class="form-label">Email:</label>
+                        <p class="form-control-static">${email}</p>
+                    </div>
+                </c:if>
+                
                 <div class="border-bottom mb-3 pb-3">
                     <label class="form-label">First Name:</label>
                     <p class="form-control-static">${firstname}</p>

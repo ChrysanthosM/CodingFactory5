@@ -12,6 +12,8 @@
                     <div class="card-body">
                         <h1 class="card-title">Welcome to the Login Page</h1>
                         <h2 class="card-subtitle mb-2 text-muted">Login</h2>
+                        <p class="small">For Administration, put admin/admin.</p>
+                        <p class="small">Otherwise signup for new Teacher or Student</p>
 
                         <pre class="text-danger">${errorMessage}</pre>
                         

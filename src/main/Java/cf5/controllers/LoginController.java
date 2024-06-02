@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.NotBlank;
+import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
@@ -46,7 +47,7 @@ public class LoginController extends AbstractController {
                 putValueToModel(httpSession, modelMap, "roleId", userDTO.roleId());
                 return AppConfig.ApplicationPages.WELCOME_PAGE.getRedirect();
             }
-        } catch (SQLException | NoSuchAlgorithmException e) {
+        } catch (SQLException | NoSuchAlgorithmException | InvocationTargetException | IllegalAccessException e) {
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.LOGIN_PAGE.getPage();
         }
