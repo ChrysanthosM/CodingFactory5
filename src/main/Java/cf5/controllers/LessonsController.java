@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -53,9 +54,14 @@ public class LessonsController extends AbstractController {
         if (bindingResult.hasErrors()) { return AppConfig.ApplicationPages.LESSON_PAGE.getPage(); }
         try {
             lessonsService.insert(lesson.toDTO());
+        } catch (ValidationException e) {
+            modelMap.put("errorMessage", "Validation Error: " + e.getMessage());
+            modelMap.put("submitButton", "Add");
+            return AppConfig.ApplicationPages.LESSON_PAGE.getPage();
         } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
             log.atError().log("addLesson failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            modelMap.put("submitButton", "Add");
             return AppConfig.ApplicationPages.LESSON_PAGE.getPage();
         }
         return AppConfig.ApplicationPages.LESSONS_LIST_PAGE.getRedirect();
@@ -89,6 +95,7 @@ public class LessonsController extends AbstractController {
         } catch (SQLException e) {
             log.atError().log("GET updateLesson failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            modelMap.put("submitButton", "Update");
             return AppConfig.ApplicationPages.LESSONS_LIST_PAGE.getPage();
         }
         return AppConfig.ApplicationPages.LESSON_PAGE.getPage();

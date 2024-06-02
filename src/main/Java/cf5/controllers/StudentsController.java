@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -68,9 +69,14 @@ public class StudentsController extends AbstractController {
         }
         try {
             studentService.insert(student.toDTO());
+        } catch (ValidationException e) {
+            modelMap.put("errorMessage", "Validation Error: " + e.getMessage());
+            modelMap.put("submitButton", "Add");
+            return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();
         } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
             log.atError().log("addStudent failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            modelMap.put("submitButton", "Add");
             return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();
         }
         return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getRedirect();
@@ -104,6 +110,7 @@ public class StudentsController extends AbstractController {
         } catch (SQLException e) {
             log.atError().log("GET updateStudent failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            modelMap.put("submitButton", "Update");
             return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();
         }
         return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();

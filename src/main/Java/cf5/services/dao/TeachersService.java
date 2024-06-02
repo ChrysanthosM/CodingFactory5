@@ -5,6 +5,7 @@ import cf5.utils.RecordUtils;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ValidationException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
@@ -25,6 +26,7 @@ public final class TeachersService extends AbstractService<TeacherDTO> {
     private static final String queryInsertOne = "INSERT INTO TEACHERS (USER_ID, EMAIL, PHONE) VALUES (?, ?, ?)";
     private static final String queryUpdateOne = "UPDATE TEACHERS SET USER_ID = ?, EMAIL = ?, PHONE = ? WHERE ID = ?";
     private static final String queryDeleteOne = "DELETE FROM TEACHERS WHERE ID = ?";
+    private static final String queryCountByName = "SELECT COUNT(*) FROM TEACHERS WHERE USER_ID = ?";
 
     @Override
     public Optional<TeacherDTO> findByKeys(Object... keyValues) throws SQLException {
@@ -36,6 +38,7 @@ public final class TeachersService extends AbstractService<TeacherDTO> {
     }
     @Override
     public void insert(TeacherDTO teacherDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
+        if (checkTeacherExist(teacherDTO.userId())) throw new ValidationException("Teacher already exist");
         getJdbcIO().executeQuery(getDefaultDataSource(), queryInsertOne, Lists.newArrayList(teacherDTO.userId(), teacherDTO.email(), teacherDTO.phone()).toArray());
     }
     @Override
@@ -45,5 +48,9 @@ public final class TeachersService extends AbstractService<TeacherDTO> {
     @Override
     public void delete(int id) throws SQLException {
         defaultDelete(id, queryDeleteOne);
+    }
+
+    private boolean checkTeacherExist(int userId) throws SQLException {
+        return getJdbcIO().selectNumeric(getDefaultDataSource(), queryCountByName, userId).orElse(0L) > 0;
     }
 }

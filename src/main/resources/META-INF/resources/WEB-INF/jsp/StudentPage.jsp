@@ -7,6 +7,7 @@
     <!-- Main content -->
     <div class="container mt-5">
         <form:form method="post" modelAttribute="student" class="mt-4">
+            <pre class="text-danger">${errorMessage}</pre>
             <form:hidden path="recId" />
 
             <div class="col-md-6">
