@@ -6,7 +6,7 @@
     <!-- Main content -->
     <div class="container">
         <table class="table table-striped">
-            <caption style="caption-side: top;">All teachers:</caption>
+            <caption style="caption-side: top; font-weight: bold;">Teachers:</caption>
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
