@@ -17,7 +17,7 @@ public final class TeachersService extends AbstractService<TeacherDTO> {
             "SELECT T.ID, T.USER_ID, U.FIRSTNAME, U.LASTNAME, T.EMAIL, T.PHONE " +
             "FROM TEACHERS T " +
             "LEFT JOIN USERS U ON T.USER_ID = U.ID " +
-            "WHERE ID = ?";
+            "WHERE T.ID = ?";
     private static final String querySelectAll =
             "SELECT T.ID, T.USER_ID, U.FIRSTNAME, U.LASTNAME, T.EMAIL, T.PHONE " +
             "FROM TEACHERS T " +
@@ -36,11 +36,11 @@ public final class TeachersService extends AbstractService<TeacherDTO> {
     }
     @Override
     public void insert(TeacherDTO teacherDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
-        getJdbcIO().executeQuery(getDefaultDataSource(), queryInsertOne, Lists.newArrayList(teacherDTO.userId(), teacherDTO.email(), teacherDTO.email(), teacherDTO.recId()).toArray());
+        getJdbcIO().executeQuery(getDefaultDataSource(), queryInsertOne, Lists.newArrayList(teacherDTO.userId(), teacherDTO.email(), teacherDTO.phone()).toArray());
     }
     @Override
     public void update(TeacherDTO teacherDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
-        getJdbcIO().executeQuery(getDefaultDataSource(), queryUpdateOne, Lists.newArrayList(teacherDTO.userId(), teacherDTO.email(), teacherDTO.email(), teacherDTO.recId()).toArray());
+        getJdbcIO().executeQuery(getDefaultDataSource(), queryUpdateOne, Lists.newArrayList(teacherDTO.userId(), teacherDTO.email(), teacherDTO.phone(), teacherDTO.recId()).toArray());
     }
     @Override
     public void delete(int id) throws SQLException {

@@ -6,7 +6,7 @@
     <!-- Main content -->
     <div class="container">
         <table class="table table-striped">
-            <caption style="caption-side: top;">All lessons:</caption>
+            <caption style="caption-side: top;">Lessons:</caption>
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
@@ -27,7 +27,8 @@
             </tbody>
         </table>
         <div>
-            <a class="btn btn-primary" href="/addLesson">Add Lesson</a>
+            <button type="button" class="btn btn-primary" onclick="window.location.href='/addLesson';">Add Lesson</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='/welcome';">Back</button>
         </div>
     </div>
 </body>

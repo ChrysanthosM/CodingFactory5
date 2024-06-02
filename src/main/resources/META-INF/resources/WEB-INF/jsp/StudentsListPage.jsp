@@ -35,7 +35,8 @@
             </tbody>
         </table>
         <div>
-            <a class="btn btn-primary" href="/addStudent">Add Student</a>
+            <button type="button" class="btn btn-primary" onclick="window.location.href='/addStudent';">Add Student</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='/welcome';">Back</button>
         </div>
     </div>
 </body>
