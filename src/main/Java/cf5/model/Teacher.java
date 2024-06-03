@@ -9,12 +9,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 public record Teacher(@NonNegative int recId, @NonNegative int userId,
+                      String firstName, String lastName,
                       @NotBlank @Size(min = 10, max = 10, message = "Phone must be 10 characters...") @Pattern(regexp = "\\d+", message = "Phone must contain only digits") String phone,
                       @NotBlank @Email String email) {
-    public static Teacher getEmpty() { return new Teacher(0, 0, StringUtils.EMPTY, StringUtils.EMPTY); }
+    public static Teacher getEmpty() { return new Teacher(0, 0, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY); }
     public static Teacher convertFrom(TeacherDTO dto) {
-        return new Teacher(dto.recId(), dto.userId(), dto.phone(), dto.email());
+        return new Teacher(dto.recId(), dto.userId(), dto.firstName(), dto.lastName(), dto.phone(), dto.email());
     }
 
-    public TeacherDTO toDTO() { return new TeacherDTO(recId, userId, StringUtils.EMPTY, StringUtils.EMPTY, phone, email); };
+    public TeacherDTO toDTO() { return new TeacherDTO(recId, userId, firstName, lastName, phone, email); };
 }

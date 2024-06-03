@@ -14,13 +14,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -29,6 +34,12 @@ public class UserController extends AbstractController {
     private @Autowired AuthenticationService authenticationService;
     private @Autowired UsersService usersService;
     private @Autowired RolesService rolesService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    }
 
     @RequestMapping(value = "userInfo", method = RequestMethod.GET)
     public String userInfo(ModelMap modelMap) {
@@ -81,7 +92,7 @@ public class UserController extends AbstractController {
         }
 
         try {
-            authenticationService.insertNewUser(user.username(), user.password(), user.firstName(), user.lastName(), user.email(), user.phone(), user.roleId());
+            authenticationService.insertNewUser(user.username(), user.password(), user.firstName(), user.lastName(), user.email(), user.phone(), user.roleId(), user.birthDate());
         } catch (Exception e) {
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.LOGIN_PAGE.getPage();

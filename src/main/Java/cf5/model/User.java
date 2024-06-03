@@ -1,9 +1,12 @@
 package cf5.model;
 
 import cf5.dto.UserDTO;
+import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.*;
 import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.index.qual.NonNegative;
+
+import java.util.Date;
 
 public record User(@NonNegative int recId,
                    @NotBlank @Size(min = 10, max = 50, message="Username must be between 10 and 50 characters...") String username,
@@ -13,11 +16,12 @@ public record User(@NonNegative int recId,
                    @NotBlank @Size(min = 2, max = 70, message = "LastName must be between 10 and 70 characters...") String lastName,
                    @NotBlank @Email String email,
                    @NotBlank @Size(min = 10, max = 10, message = "Phone must be 10 characters...") @Pattern(regexp = "\\d+", message = "Phone must contain only digits") String phone,
-                   @Min(value = 1, message = "Invalid Role") @Max(value = 2, message = "Invalid Role") int roleId) {
-    public static User getEmpty() { return new User(0, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, 2); }
+                   @Min(value = 1, message = "Invalid Role") @Max(value = 2, message = "Invalid Role") int roleId,
+                   @Nonnull @Past(message = "Birth date must be in the past") Date birthDate) {
+    public static User getEmpty() { return new User(0, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, 2, new Date()); }
     public static User convertFrom(UserDTO dto) {
-        return new User(dto.recId(), dto.userName(), dto.password(), dto.password(), dto.firstName(), dto.lastName(), dto.email(), dto.phone(), dto.roleId());
+        return new User(dto.recId(), dto.userName(), dto.password(), dto.password(), dto.firstName(), dto.lastName(), dto.email(), dto.phone(), dto.roleId(), dto.birthDate());
     }
 
-    public UserDTO toDTO() { return new UserDTO(recId, username, password, firstName, lastName, email, phone, roleId); };
+    public UserDTO toDTO() { return new UserDTO(recId, username, password, firstName, lastName, email, phone, roleId, birthDate); };
 }

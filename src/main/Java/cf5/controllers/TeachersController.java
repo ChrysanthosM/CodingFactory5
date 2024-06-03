@@ -4,7 +4,6 @@ import cf5.AppConfig;
 import cf5.dto.TeacherDTO;
 import cf5.dto.UserDTO;
 import cf5.model.Teacher;
-import cf5.model.Teachers;
 import cf5.model.UserForCombo;
 import cf5.services.dao.TeachersService;
 import cf5.services.dao.UsersService;
@@ -14,9 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +27,8 @@ import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,12 +38,18 @@ public class TeachersController extends AbstractController {
     private @Autowired TeachersService teachersService;
     private @Autowired UsersService usersService;
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    }
+
     @RequestMapping(value = "listTeachers", method = RequestMethod.GET)
     public String listTeachers (ModelMap modelMap) {
         try {
-            List<TeacherDTO> teacherDTOS = teachersService.getAll();
-            if (CollectionUtils.isEmpty(teacherDTOS)) return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
-            List<Teachers> teachersList = teacherDTOS.stream().map(Teachers::convertFrom).toList();
+            List<TeacherDTO> teacherDTOs = teachersService.getAll();
+            if (CollectionUtils.isEmpty(teacherDTOs)) return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
+            List<Teacher> teachersList = teacherDTOs.stream().map(Teacher::convertFrom).toList();
             modelMap.put("teachersList", teachersList);
         } catch (SQLException e) {
             log.atError().log("listTeachers failed: " + e.getMessage());

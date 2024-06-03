@@ -1,6 +1,8 @@
 package cf5.dto;
 
 import cf5.db.loader.RowLoader;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,5 +27,11 @@ public record RoleDTO(int recId, String description) {
                     RowLoader.extractValue(columnNamesValues, "DESCRIPTION", String.class)
             );
         }
+    }
+
+    @Getter @AllArgsConstructor
+    public enum UserRole {
+        ADMIN(0), TEACHER(1), STUDENT(2);
+        private final int roleId;
     }
 }

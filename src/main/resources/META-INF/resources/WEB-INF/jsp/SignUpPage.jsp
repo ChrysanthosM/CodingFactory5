@@ -19,6 +19,13 @@
                     <form:errors path="roleId" cssClass="text-warning" />
                 </fieldset>
             </div>
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <form:label path="birthDate" class="form-label">Birth Date</form:label>
+                    <form:input id="birthDate" path="birthDate" class="form-control datepicker" required="required" style="height: calc(1.5em + .75rem + 2px);" />
+                    <form:errors path="birthDate" cssClass="text-warning" />
+                </fieldset>
+            </div>
 
             <div class="col-md-12">
                 <fieldset class="form-group">
@@ -70,7 +77,6 @@
                     <form:errors path="email" cssClass="text-warning" />
                 </fieldset>
             </div>
-
             <div class="col-md-6">
                 <fieldset class="form-group">
                     <form:label path="phone" class="form-label">Phone</form:label>
