@@ -43,9 +43,9 @@ public class AuthenticationService {
         if (roleId == RoleDTO.UserRole.TEACHER.getRoleId() || roleId == RoleDTO.UserRole.STUDENT.getRoleId()) {
             UserDTO userDTO = usersService.getByUserName(username).orElseThrow();
             if (roleId == RoleDTO.UserRole.TEACHER.getRoleId()) {
-                teachersService.insert(new TeacherDTO(0, userDTO.recId(), StringUtils.EMPTY, StringUtils.EMPTY, phone, email));
+                teachersService.insert(new TeacherDTO(0, userDTO.recId(), null, null, phone, email));
             } else {
-                studentsService.insert(new StudentDTO(0, userDTO.recId(), StringUtils.EMPTY, StringUtils.EMPTY, phone, email, new Date()));
+                studentsService.insert(new StudentDTO(0, userDTO.recId(), null, null, phone, email, null));
             }
         }
     }
