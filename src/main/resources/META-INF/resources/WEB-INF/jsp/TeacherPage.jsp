@@ -38,6 +38,16 @@
                 </fieldset>
             </div>
 
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <form:label path="verified" class="form-label">Verified</form:label>
+                    <div class="form-check">
+                        <form:checkbox path="verified" value="1" class="form-check-input" />
+                        <form:errors path="verified" cssClass="text-warning" />
+                    </div>
+                </fieldset>
+            </div>
+
             <div class="row">
                 <div class="col-md-12 text-center">
                     <button type="submit" class="btn btn-success">${submitButton}</button>

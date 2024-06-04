@@ -13,16 +13,16 @@ import java.util.Optional;
 @Service
 public final class TeachersService extends AbstractService<TeacherDTO> {
     private static final String querySelectOne =
-            "SELECT T.ID, T.USER_ID, U.FIRSTNAME, U.LASTNAME, T.EMAIL, T.PHONE " +
+            "SELECT T.ID, T.USER_ID, U.FIRSTNAME, U.LASTNAME, T.EMAIL, T.PHONE, T.VERIFIED " +
                     "FROM TEACHERS T " +
                     "LEFT JOIN USERS U ON T.USER_ID = U.ID " +
                     "WHERE T.ID = ?";
     private static final String querySelectAll =
-            "SELECT T.ID, T.USER_ID, U.FIRSTNAME, U.LASTNAME, T.EMAIL, T.PHONE " +
+            "SELECT T.ID, T.USER_ID, U.FIRSTNAME, U.LASTNAME, T.EMAIL, T.PHONE, T.VERIFIED " +
                     "FROM TEACHERS T " +
                     "LEFT JOIN USERS U ON T.USER_ID = U.ID";
-    private static final String queryInsertOne = "INSERT INTO TEACHERS (USER_ID, PHONE, EMAIL) VALUES (?, ?, ?)";
-    private static final String queryUpdateOne = "UPDATE TEACHERS SET USER_ID = ?, PHONE = ?, EMAIL = ? WHERE ID = ?";
+    private static final String queryInsertOne = "INSERT INTO TEACHERS (USER_ID, PHONE, EMAIL, VERIFIED) VALUES (?, ?, ?, ?)";
+    private static final String queryUpdateOne = "UPDATE TEACHERS SET USER_ID = ?, PHONE = ?, EMAIL = ?, VERIFIED = ? WHERE ID = ?";
     private static final String queryDeleteOne = "DELETE FROM TEACHERS WHERE ID = ?";
     private static final String queryCountByName = "SELECT COUNT(*) FROM TEACHERS WHERE USER_ID = ?";
 
@@ -37,11 +37,12 @@ public final class TeachersService extends AbstractService<TeacherDTO> {
     @Override
     public void insert(TeacherDTO teacherDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
         if (checkTeacherExist(teacherDTO.userId())) throw new ValidationException("Teacher already exist");
-        getJdbcIO().executeQuery(getDefaultDataSource(), queryInsertOne, Lists.newArrayList(teacherDTO.userId(), teacherDTO.email(), teacherDTO.phone()).toArray());
+        getJdbcIO().executeQuery(getDefaultDataSource(), queryInsertOne, Lists.newArrayList(teacherDTO.userId(), teacherDTO.phone(), teacherDTO.email(), teacherDTO.verified()).toArray());
     }
     @Override
     public void update(TeacherDTO teacherDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
-        getJdbcIO().executeQuery(getDefaultDataSource(), queryUpdateOne, Lists.newArrayList(teacherDTO.userId(), teacherDTO.email(), teacherDTO.phone(), teacherDTO.recId()).toArray());
+        getJdbcIO().executeQuery(getDefaultDataSource(), queryUpdateOne, Lists.newArrayList(teacherDTO.userId(), teacherDTO.phone(), teacherDTO.email(), teacherDTO.verified(),
+                teacherDTO.recId()).toArray());
     }
     @Override
     public void delete(int id) throws SQLException {

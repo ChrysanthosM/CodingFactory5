@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public record TeacherDTO(int recId, int userId, String firstName, String lastName, String phone, String email) {
+public record TeacherDTO(int recId, int userId, String firstName, String lastName, String phone, String email, String verified) {
     public static LoadDTO newConverter() { return new LoadDTO(); }
     public static class LoadDTO extends RowLoader<TeacherDTO> {
         @Override
@@ -19,7 +19,8 @@ public record TeacherDTO(int recId, int userId, String firstName, String lastNam
                     resultSet.getString("FIRSTNAME"),
                     resultSet.getString("LASTNAME"),
                     resultSet.getString("PHONE"),
-                    resultSet.getString("EMAIL")
+                    resultSet.getString("EMAIL"),
+                    resultSet.getString("VERIFIED")
             );
         }
         @Override
@@ -30,7 +31,8 @@ public record TeacherDTO(int recId, int userId, String firstName, String lastNam
                     RowLoader.extractValue(columnNamesValues, "FIRSTNAME", String.class),
                     RowLoader.extractValue(columnNamesValues, "LASTNAME", String.class),
                     RowLoader.extractValue(columnNamesValues, "PHONE", String.class),
-                    RowLoader.extractValue(columnNamesValues, "EMAIL", String.class)
+                    RowLoader.extractValue(columnNamesValues, "EMAIL", String.class),
+                    RowLoader.extractValue(columnNamesValues, "VERIFIED", String.class)
             );
         }
     }

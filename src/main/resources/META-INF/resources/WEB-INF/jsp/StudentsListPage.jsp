@@ -35,7 +35,7 @@
             </tbody>
         </table>
         <div>
-            <button type="button" class="btn btn-primary" onclick="window.location.href='/addStudent';">Add Student</button>
+            <%-- <button type="button" class="btn btn-primary" onclick="window.location.href='/addStudent';">Add Student</button> --%>
             <button type="button" class="btn btn-secondary" onclick="window.location.href='/welcome';">Back</button>
         </div>
     </div>

@@ -15,6 +15,9 @@
                     <th>Phone</th>
                     <th>Email</th>
                     <c:if test="${roleId == 0}">
+                        <th>Verified</th>
+                    </c:if>
+                    <c:if test="${roleId == 0}">
                         <th></th>
                         <th></th>
                     </c:if>
@@ -29,6 +32,9 @@
                         <td>${teacher.phone()}</td>
                         <td>${teacher.email()}</td>
                         <c:if test="${roleId == 0}">
+                            <td><input type="checkbox" class="form-check-input" ${teacher.verified() == '1' ? 'checked' : 'value="0"'} disabled></td>
+                        </c:if>
+                        <c:if test="${roleId == 0}">
                             <td><a class="btn btn-success" href="/updateTeacher?id=${teacher.recId()}">Update</a></td>
                             <td><a class="btn btn-warning" href="/deleteTeacher?id=${teacher.recId()}" onclick="return confirmDelete()">Delete</a></td>
                         </c:if>
@@ -37,9 +43,9 @@
             </tbody>
         </table>
         <div>
-            <c:if test="${roleId == 0}">
+            <%-- <c:if test="${roleId == 0}">
                 <button type="button" class="btn btn-primary" onclick="window.location.href='/addTeacher';">Add Teacher</button>
-            </c:if>
+            </c:if> --%>
             <button type="button" class="btn btn-secondary" onclick="window.location.href='/welcome';">Back</button>
         </div>
     </div>
