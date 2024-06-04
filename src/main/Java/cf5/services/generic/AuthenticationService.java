@@ -53,7 +53,7 @@ public class AuthenticationService {
     public boolean authenticateUser(@Nonnull String username, @Nonnull String password) throws SQLException, NoSuchAlgorithmException, InvocationTargetException, IllegalAccessException {
         if (username.equalsIgnoreCase("admin") && password.equals("admin")) {
             Optional<UserDTO> userDTO = usersService.getByUserName("admin");
-            if (userDTO.isEmpty()) insertNewUser("admin", PasswordUtils.hashPassword("admin"), "admin", "admin", StringUtils.EMPTY, StringUtils.EMPTY, RoleDTO.UserRole.ADMIN.getRoleId(), new Date());
+            if (userDTO.isEmpty()) insertNewUser("admin", "admin", "admin", "admin", StringUtils.EMPTY, StringUtils.EMPTY, RoleDTO.UserRole.ADMIN.getRoleId(), new Date());
         }
         return (usersService.countByUserNamePassword(username, PasswordUtils.hashPassword(password)).compareTo(0L) > 0);
     }

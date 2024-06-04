@@ -9,31 +9,37 @@
             <caption style="caption-side: top; font-weight: bold;">Teachers:</caption>
             <thead class="thead-dark">
                 <tr>
-                    <th>ID</th>
+                   <th class="d-none">ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Phone</th>
                     <th>Email</th>
-                    <th></th>
-                    <th></th>
+                    <c:if test="${roleId == 0}">
+                        <th></th>
+                        <th></th>
+                    </c:if>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach items="${teachersList}" var="teacher">
                     <tr>
-                        <td>${teacher.recId()}</td>
+                        <td class="d-none">${teacher.recId()}</td>
                         <td>${teacher.firstName()}</td>
                         <td>${teacher.lastName()}</td>
                         <td>${teacher.phone()}</td>
                         <td>${teacher.email()}</td>
-                        <td><a class="btn btn-success" href="/updateTeacher?id=${teacher.recId()}">Update</a></td>
-                        <td><a class="btn btn-warning" href="/deleteTeacher?id=${teacher.recId()}" onclick="return confirmDelete()">Delete</a></td>
+                        <c:if test="${roleId == 0}">
+                            <td><a class="btn btn-success" href="/updateTeacher?id=${teacher.recId()}">Update</a></td>
+                            <td><a class="btn btn-warning" href="/deleteTeacher?id=${teacher.recId()}" onclick="return confirmDelete()">Delete</a></td>
+                        </c:if>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
         <div>
-            <button type="button" class="btn btn-primary" onclick="window.location.href='/addTeacher';">Add Teacher</button>
+            <c:if test="${roleId == 0}">
+                <button type="button" class="btn btn-primary" onclick="window.location.href='/addTeacher';">Add Teacher</button>
+            </c:if>
             <button type="button" class="btn btn-secondary" onclick="window.location.href='/welcome';">Back</button>
         </div>
     </div>

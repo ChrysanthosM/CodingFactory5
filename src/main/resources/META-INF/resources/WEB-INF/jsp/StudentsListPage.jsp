@@ -9,7 +9,7 @@
             <caption style="caption-side: top; font-weight: bold;">Students:</caption>
             <thead class="thead-dark">
                 <tr>
-                    <th>ID</th>
+                    <th class="d-none">ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Birth Date</th>
@@ -22,7 +22,7 @@
             <tbody>
                 <c:forEach items="${studentsList}" var="student">
                     <tr>
-                        <td>${student.recId()}</td>
+                        <td class="d-none">${student.recId()}</td>
                         <td>${student.firstName()}</td>
                         <td>${student.lastName()}</td>
                         <td><fmt:formatDate value="${student.birthDate()}" pattern="dd/MM/yyyy"/></td>

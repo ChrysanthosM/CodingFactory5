@@ -9,25 +9,31 @@
             <caption style="caption-side: top; font-weight: bold;">Lessons:</caption>
             <thead class="thead-dark">
                 <tr>
-                    <th>ID</th>
+                    <th class="d-none">ID</th>
                     <th>Name</th>
-                    <th></th>
-                    <th></th>
+                    <c:if test="${roleId == 0 || roleId == 1}">
+                        <th></th>
+                        <th></th>
+                    </c:if>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach items="${lessonsList}" var="lesson">
                     <tr>
-                        <td>${lesson.recId()}</td>
+                        <td class="d-none">${lesson.recId()}</td>
                         <td>${lesson.name()}</td>
-                        <td><a class="btn btn-success" href="/updateLesson?id=${lesson.recId()}">Update</a></td>
-                        <td><a class="btn btn-warning" href="/deleteLesson?id=${lesson.recId()}" onclick="return confirmDelete()">Delete</a></td>
+                        <c:if test="${roleId == 0 || roleId == 1}">
+                            <td><a class="btn btn-success" href="/updateLesson?id=${lesson.recId()}">Update</a></td>
+                            <td><a class="btn btn-warning" href="/deleteLesson?id=${lesson.recId()}" onclick="return confirmDelete()">Delete</a></td>
+                        </c:if>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
         <div>
-            <button type="button" class="btn btn-primary" onclick="window.location.href='/addLesson';">Add Lesson</button>
+            <c:if test="${roleId == 0 || roleId == 1}">
+                <button type="button" class="btn btn-primary" onclick="window.location.href='/addLesson';">Add Lesson</button>
+            </c:if>
             <button type="button" class="btn btn-secondary" onclick="window.location.href='/welcome';">Back</button>
         </div>
     </div>
