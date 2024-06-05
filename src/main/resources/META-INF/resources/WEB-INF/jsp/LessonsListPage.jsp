@@ -11,6 +11,9 @@
                 <tr>
                     <th class="d-none">ID</th>
                     <th>Name</th>
+                    <c:if test="${roleId == 2}">
+                        <th>Selected</th>
+                    </c:if>
                     <c:if test="${roleId == 0 || roleId == 1}">
                         <th></th>
                         <th></th>
@@ -22,6 +25,9 @@
                     <tr>
                         <td class="d-none">${lesson.recId()}</td>
                         <td>${lesson.name()}</td>
+                        <c:if test="${roleId == 2}">
+                            <td><input type="checkbox" class="form-check-input" ${lesson.selected() == '1' ? 'checked' : 'value="0"'}></td>
+                        </c:if>
                         <c:if test="${roleId == 0 || roleId == 1}">
                             <td><a class="btn btn-success" href="/updateLesson?id=${lesson.recId()}">Update</a></td>
                             <td><a class="btn btn-warning" href="/deleteLesson?id=${lesson.recId()}" onclick="return confirmDelete()">Delete</a></td>

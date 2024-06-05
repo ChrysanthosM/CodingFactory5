@@ -28,7 +28,7 @@
                             </div>
                             <div class="d-flex justify-content-between">
                                 <button type="submit" class="btn btn-primary">Login</button>
-                                <a href="/signup" class="btn btn-secondary">Sign Up</a>
+                                <a href="/signup" class="btn btn-secondary ml-2">Sign Up</a>
                             </div>
                         </form>
                     </div>

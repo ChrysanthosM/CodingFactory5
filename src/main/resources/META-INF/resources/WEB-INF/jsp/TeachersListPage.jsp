@@ -43,9 +43,6 @@
             </tbody>
         </table>
         <div>
-            <%-- <c:if test="${roleId == 0}">
-                <button type="button" class="btn btn-primary" onclick="window.location.href='/addTeacher';">Add Teacher</button>
-            </c:if> --%>
             <button type="button" class="btn btn-secondary" onclick="window.location.href='/welcome';">Back</button>
         </div>
     </div>

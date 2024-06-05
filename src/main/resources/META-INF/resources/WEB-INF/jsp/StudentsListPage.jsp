@@ -28,7 +28,7 @@
                         <td><fmt:formatDate value="${student.birthDate()}" pattern="dd/MM/yyyy"/></td>
                         <td>${student.phone()}</td>
                         <td>${student.email()}</td>
-                        <td><a class="btn btn-success" href="/updateStudent?id=${student.recId()}">Update</a></td>
+                        <%-- <td><a class="btn btn-success" href="/updateStudent?id=${student.recId()}">Update</a></td> --%>
                         <td><a class="btn btn-warning" href="/deleteStudent?id=${student.recId()}" onclick="return confirmDelete()">Delete</a></td>
                     </tr>
                 </c:forEach>
