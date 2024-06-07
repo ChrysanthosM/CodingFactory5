@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public final class RolesService extends AbstractService<RoleDTO> {
+public class RolesService extends AbstractService<RoleDTO> {
     private static final String querySelectOne = "SELECT * FROM ROLES WHERE ID = ?";
     private static final String querySelectAll = "SELECT * FROM ROLES";
     private static final String queryInsertOne = "INSERT INTO ROLES (DESCRIPTION) VALUES (?)";

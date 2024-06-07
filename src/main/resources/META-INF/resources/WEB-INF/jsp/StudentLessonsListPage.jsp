@@ -32,11 +32,13 @@
                     </c:forEach>
                 </tbody>
             </table>
-            <div>
-                <button type="button" class="btn btn-secondary" onclick="window.location.href='/welcome';">Back</button>
-            </div>
-            <div id="submit-container" class="mt-3" style="display: none;">
-                <button type="button" class="btn btn-primary" onclick="submitSelections()">Submit</button>
+            <div class="container mt-5">
+                <div class="d-flex align-items-center">
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/welcome';">Back</button>
+                    <div id="submit-container" class="ms-3" style="display: none;">
+                        <button type="button" class="btn btn-primary" onclick="submitSelections()">Submit</button>
+                    </div>
+                </div>
             </div>
         </form>
     </div>

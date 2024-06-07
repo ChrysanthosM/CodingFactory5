@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public final class TeachersService extends AbstractService<TeacherDTO> {
+public class TeachersService extends AbstractService<TeacherDTO> {
     private static final String querySelectOne =
             "SELECT T.ID, T.USER_ID, U.FIRSTNAME, U.LASTNAME, T.EMAIL, T.PHONE, T.VERIFIED " +
                     "FROM TEACHERS T " +

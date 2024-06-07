@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public final class UsersService extends AbstractService<UserDTO> {
+public class UsersService extends AbstractService<UserDTO> {
     private static final String querySelectOne = "SELECT * FROM USERS WHERE ID = ?";
     private static final String querySelectAll = "SELECT * FROM USERS";
     private static final String queryInsertOne = "INSERT INTO USERS (USERNAME, PASSWORD, FIRSTNAME, LASTNAME, EMAIL, PHONE, ROLE_ID, BIRTHDATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";

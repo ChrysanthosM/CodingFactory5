@@ -9,6 +9,8 @@ import cf5.model.StudentLesson;
 import cf5.services.dao.StudentsLessonsService;
 import cf5.services.dao.StudentsService;
 import cf5.services.dao.UsersService;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -62,22 +64,28 @@ public class StudentLessonController extends AbstractController {
         return AppConfig.ApplicationPages.STUDENT_LESSONS_LIST_PAGE.getPage();
     }
 
-    @PostMapping("/submitStudentLessons")
-    public ModelAndView submitLessons(
+    @RequestMapping(value = "submitStudentLessons", method = RequestMethod.POST)
+    public String submitStudentLessons(ModelMap modelMap,
             @RequestParam("studentId[]") List<Integer> studentIds,
             @RequestParam("lessonId[]") List<Integer> lessonIds,
             @RequestParam("selected[]") List<Integer> selected) {
+        if (CollectionUtils.isEmpty(studentIds) || CollectionUtils.isEmpty(lessonIds) || CollectionUtils.isEmpty(selected)) return AppConfig.ApplicationPages.WELCOME_PAGE.getPage();
+        Preconditions.checkArgument(studentIds.size() == lessonIds.size() && lessonIds.size() == selected.size());
+        int listsSize = studentIds.size();
 
-        // Process the received data
-        for (int i = 0; i < studentIds.size(); i++) {
-            Integer studentId = studentIds.get(i);
-            Integer lessonId = lessonIds.get(i);
-            Integer isSelected = selected.get(i);
-            // Save or process the data as needed
+        List<StudentLessonDTO> studentLessonDTOs = Lists.newArrayList();
+        for (int i = 0; i < listsSize; i++) {
+            studentLessonDTOs.add(new StudentLessonDTO(studentIds.get(i), lessonIds.get(i), null, String.valueOf(selected.get(i))));
+        }
+        try {
+            studentsLessonsService.replaceStudentLessons(studentLessonDTOs);
+        } catch (SQLException e) {
+            log.atError().log("submitStudentLessons failed: " + e.getMessage());
+            modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            return AppConfig.ApplicationPages.STUDENT_LESSONS_LIST_PAGE.getPage();
         }
 
-        // Return a view or redirect as necessary
-        return new ModelAndView(AppConfig.ApplicationPages.WELCOME_PAGE.getRedirect());
+        return AppConfig.ApplicationPages.WELCOME_PAGE.getPage();
     }
 
 

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public final class LessonsService extends AbstractService<LessonDTO> {
+public class LessonsService extends AbstractService<LessonDTO> {
     private static final String querySelectOne = "SELECT * FROM LESSONS WHERE ID = ?";
     private static final String querySelectAll = "SELECT * FROM LESSONS";
     private static final String queryInsertOne = "INSERT INTO LESSONS (NAME) VALUES (?)";
