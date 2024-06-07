@@ -23,9 +23,12 @@ public class AppConfig {
         STUDENTS_LIST_PAGE("StudentsListPage", "redirect:/listStudents"),
         STUDENT_LESSONS_LIST_PAGE("StudentLessonsListPage", "redirect:/listStudentLessons"),
         TEACHERS_LIST_PAGE("TeachersListPage", "redirect:/listTeachers"),
+        CLASSROOMS_LIST_PAGE("ClassRoomsListPage", "redirect:/listClassRooms"),
         LESSONS_LIST_PAGE("LessonsListPage", "redirect:/listLessons"),
+        ADD_CLASS_ROOM_PAGE("AddClassRoomPage", "redirect:/addClassRoom"),
         STUDENT_PAGE("StudentPage", null),
         TEACHER_PAGE("TeacherPage", null),
+        CLASSROOM_PAGE("ClassRoomPage", null),
         LESSON_PAGE("LessonPage", null),
         ;
 
