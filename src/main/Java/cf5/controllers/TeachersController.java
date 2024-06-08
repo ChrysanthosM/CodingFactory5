@@ -61,23 +61,31 @@ public class TeachersController extends AbstractController {
 
     @RequestMapping(value = "addTeacher", method = RequestMethod.GET)
     public String addTeacher(ModelMap modelMap) {
-        List<UserForCombo> usersList = Lists.newArrayList();
+        List<UserForCombo> teachersList;
         try {
-            List<UserDTO> userDTOs = usersService.getAllTeachers();
-            if (CollectionUtils.isNotEmpty(userDTOs)) usersList = userDTOs.stream().map(UserForCombo::convertFrom).toList();
+            teachersList = usersService.getAllTeachers();
         } catch (SQLException e) {
             log.atError().log("GET addTeacher failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
         }
         modelMap.put("teacher", Teacher.getEmpty());
-        modelMap.put("usersList", usersList);
+        modelMap.put("teachersList", teachersList);
         modelMap.put("submitButton", "Add");
         return AppConfig.ApplicationPages.TEACHER_PAGE.getPage();
     }
     @RequestMapping(value = "addTeacher", method = RequestMethod.POST)
     public String addTeacher(ModelMap modelMap, @Valid Teacher teacher, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            List<UserForCombo> teachersList;
+            try {
+                teachersList = usersService.getAllTeachers();
+            } catch (SQLException e) {
+                log.atError().log("POST addTeacher failed: " + e.getMessage());
+                modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+                return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
+            }
+            modelMap.put("teachersList", teachersList);
             modelMap.put("submitButton", "Add");
             return AppConfig.ApplicationPages.TEACHER_PAGE.getPage();
         }
@@ -115,15 +123,12 @@ public class TeachersController extends AbstractController {
 
     @RequestMapping(value = "updateTeacher", method = RequestMethod.GET)
     public String updateTeacher(ModelMap modelMap, @RequestParam @NotNull @NonNegative int id) {
-        List<UserForCombo> usersList = Lists.newArrayList();
         try {
             Optional<TeacherDTO> teacherDTO = teachersService.findByKeys(id);
             if (teacherDTO.isEmpty()) return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
             Teacher teacher = Teacher.convertFrom(teacherDTO.orElseThrow());
-            List<UserDTO> userDTOs = usersService.getAllTeachers();
-            if (CollectionUtils.isNotEmpty(userDTOs)) usersList = userDTOs.stream().map(UserForCombo::convertFrom).toList();
             modelMap.put("teacher", teacher);
-            modelMap.put("usersList", usersList);
+            modelMap.put("teachersList", usersService.getAllTeachers());
             modelMap.put("submitButton", "Update");
         } catch (SQLException e) {
             log.atError().log("GET updateTeacher failed: " + e.getMessage());

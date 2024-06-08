@@ -17,6 +17,11 @@ public class TeachersService extends AbstractService<TeacherDTO> {
                     "FROM TEACHERS T " +
                     "LEFT JOIN USERS U ON T.USER_ID = U.ID " +
                     "WHERE T.ID = ?";
+    private static final String querySelectByUserId =
+            "SELECT T.ID, T.USER_ID, U.FIRSTNAME, U.LASTNAME, T.EMAIL, T.PHONE, T.VERIFIED " +
+                    "FROM TEACHERS T " +
+                    "LEFT JOIN USERS U ON T.USER_ID = U.ID " +
+                    "WHERE T.USER_ID = ?";
     private static final String querySelectAll =
             "SELECT T.ID, T.USER_ID, U.FIRSTNAME, U.LASTNAME, T.EMAIL, T.PHONE, T.VERIFIED " +
                     "FROM TEACHERS T " +
@@ -26,14 +31,19 @@ public class TeachersService extends AbstractService<TeacherDTO> {
     private static final String queryDeleteOne = "DELETE FROM TEACHERS WHERE ID = ?";
     private static final String queryCountByName = "SELECT COUNT(*) FROM TEACHERS WHERE USER_ID = ?";
 
+
     @Override
     public Optional<TeacherDTO> findByKeys(Object... keyValues) throws SQLException {
         return super.defaultSelectOne(TeacherDTO.newConverter(), querySelectOne, keyValues);
+    }
+    public Optional<TeacherDTO> findByUserId(int userId) throws SQLException {
+        return getJdbcIO().selectOne(getDefaultDataSource(), TeacherDTO.newConverter(), querySelectByUserId, userId);
     }
     @Override
     public List<TeacherDTO> getAll() throws SQLException {
         return super.defaultSelectAll(TeacherDTO.newConverter(), querySelectAll);
     }
+
     @Override
     public void insert(TeacherDTO teacherDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
         if (checkTeacherExist(teacherDTO.userId())) throw new ValidationException("Teacher already exist");

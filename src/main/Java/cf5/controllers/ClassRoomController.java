@@ -2,10 +2,13 @@ package cf5.controllers;
 
 import cf5.AppConfig;
 import cf5.dto.ClassRoomDTO;
+import cf5.dto.LessonDTO;
 import cf5.dto.UserDTO;
 import cf5.model.ClassRoom;
+import cf5.model.Lesson;
 import cf5.model.UserForCombo;
 import cf5.services.dao.ClassRoomService;
+import cf5.services.dao.LessonsService;
 import cf5.services.dao.UsersService;
 import com.google.common.collect.Lists;
 import jakarta.validation.Valid;
@@ -31,6 +34,7 @@ import java.util.List;
 public class ClassRoomController extends AbstractController {
     private @Autowired ClassRoomService classRoomService;
     private @Autowired UsersService usersService;
+    private @Autowired LessonsService lessonsService;
 
     @RequestMapping(value = "listClassRooms", method = RequestMethod.GET)
     public String listClassRooms (ModelMap modelMap) {
@@ -49,23 +53,37 @@ public class ClassRoomController extends AbstractController {
 
     @RequestMapping(value = "addClassRoom", method = RequestMethod.GET)
     public String addClassRoom(ModelMap modelMap) {
-        List<UserForCombo> usersList = Lists.newArrayList();
+        List<UserForCombo> teachersList;
+        List<Lesson> lessonsList;
         try {
-            List<UserDTO> userDTOs = usersService.getAllTeachers();
-            if (CollectionUtils.isNotEmpty(userDTOs)) usersList = userDTOs.stream().map(UserForCombo::convertFrom).toList();
+            teachersList = usersService.getAllTeachers();
+            lessonsList = lessonsService.getAll().stream().map(Lesson::convertFrom).toList();
         } catch (SQLException e) {
             log.atError().log("GET addClassRoom failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getPage();
         }
         modelMap.put("classRoom", ClassRoom.getEmpty());
-        modelMap.put("usersList", usersList);
+        modelMap.put("teachersList", teachersList);
+        modelMap.put("lessonsList", lessonsList);
         modelMap.put("submitButton", "Add");
         return AppConfig.ApplicationPages.CLASS_ROOM_PAGE.getPage();
     }
     @RequestMapping(value = "addClassRoom", method = RequestMethod.POST)
     public String addClassRoom(ModelMap modelMap, @Valid ClassRoom classRoom, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            List<UserForCombo> teachersList;
+            List<Lesson> lessonsList;
+            try {
+                teachersList = usersService.getAllTeachers();
+                lessonsList = lessonsService.getAll().stream().map(Lesson::convertFrom).toList();
+            } catch (SQLException e) {
+                log.atError().log("POST addClassRoom failed: " + e.getMessage());
+                modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+                return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getPage();
+            }
+            modelMap.put("teachersList", teachersList);
+            modelMap.put("lessonsList", lessonsList);
             modelMap.put("submitButton", "Add");
             return AppConfig.ApplicationPages.CLASSROOM_PAGE.getPage();
         }

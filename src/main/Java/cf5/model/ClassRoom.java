@@ -11,12 +11,12 @@ import org.checkerframework.checker.index.qual.NonNegative;
 
 public record ClassRoom(@NonNegative int recId,
                         @NotBlank @Size(max = 50, message="Name must have max 50 characters...") String classRoomName,
-                        @NonNegative int teacherId, String teacherName,
+                        @NonNegative int teacherUserId, String teacherName,
                         @NonNegative int lessonId, String lessonName) {
     public static ClassRoom getEmpty() { return new ClassRoom(0, StringUtils.EMPTY, 0, StringUtils.EMPTY, 0, StringUtils.EMPTY); }
     public static ClassRoom convertFrom(ClassRoomDTO dto) {
-        return new ClassRoom(dto.recId() , dto.name(), dto.teacherId(), Converters.getFullName(dto.teacherFirstName(), dto.teacherLastName()), dto.lessonId(), dto.lessonName());
+        return new ClassRoom(dto.recId() , dto.name(), dto.teacherUserId(), Converters.getFullName(dto.teacherFirstName(), dto.teacherLastName()), dto.lessonId(), dto.lessonName());
     }
 
-    public ClassRoomDTO toDTO() { return new ClassRoomDTO(recId, classRoomName, teacherId, null, null, lessonId, lessonName); };
+    public ClassRoomDTO toDTO() { return new ClassRoomDTO(recId, classRoomName, teacherUserId, null, null, lessonId, lessonName); };
 }

@@ -11,7 +11,7 @@
                 <tr>
                    <th class="d-none">ID</th>
                     <th>Name</th>
-                    <th class="d-none">TeacherID</th>
+                    <th class="d-none">TeacherUserID</th>
                     <th>Teacher</th>
                     <th class="d-none">LessonID</th>
                     <th>Lesson</th>
@@ -23,11 +23,12 @@
                 <c:forEach items="${classRoomsList}" var="classRoom">
                     <tr>
                         <td class="d-none">${classRoom.recId()}</td>
-                        <td>${classRoom.name()}</td>
-                        <td class="d-none">${classRoom.teacherId()}</td>
+                        <td>${classRoom.classRoomName()}</td>
+                        <td class="d-none">${classRoom.teacherUserId()}</td>
                         <td>${classRoom.teacherName()}</td>
                         <td class="d-none">${classRoom.lessonId()}</td>
                         <td>${classRoom.lessonName()}</td>
+                        
                         <c:if test="${roleId == 0}">
                             <td><a class="btn btn-success" href="/updateClassRoom?id=${classRoom.recId()}">Update</a></td>
                             <td><a class="btn btn-warning" href="/deleteClassRoom?id=${classRoom.recId()}" onclick="return confirmDelete()">Delete</a></td>
@@ -37,7 +38,9 @@
             </tbody>
         </table>
         <div>
-            <button type="button" class="btn btn-primary" onclick="window.location.href='/addClassRoom';">Add Class</button>
+            <c:if test="${roleId == 0}">
+                <button type="button" class="btn btn-primary" onclick="window.location.href='/addClassRoom';">Add Class</button>
+            </c:if>
             <button type="button" class="btn btn-secondary" onclick="window.location.href='/welcome';">Back</button>
         </div>
     </div>

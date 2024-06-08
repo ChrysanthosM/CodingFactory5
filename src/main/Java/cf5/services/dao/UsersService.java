@@ -1,6 +1,10 @@
 package cf5.services.dao;
 
 import cf5.dto.UserDTO;
+import cf5.model.UserForCombo;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
@@ -29,8 +33,11 @@ public class UsersService extends AbstractService<UserDTO> {
         return super.defaultSelectAll(UserDTO.newConverter(), querySelectAll);
     }
 
-    public List<UserDTO> getAllTeachers() throws SQLException {
-        return getJdbcIO().select(getDefaultDataSource(), UserDTO.newConverter(), querySelectAllTeachers);
+    public List<UserForCombo> getAllTeachers() throws SQLException {
+        List<UserForCombo> teachersList = Lists.newArrayList();
+        List<UserDTO> userDTOs = getJdbcIO().select(getDefaultDataSource(), UserDTO.newConverter(), querySelectAllTeachers);
+        if (CollectionUtils.isNotEmpty(userDTOs)) teachersList = userDTOs.stream().map(UserForCombo::convertFrom).toList();
+        return teachersList;
     }
 
     @Override

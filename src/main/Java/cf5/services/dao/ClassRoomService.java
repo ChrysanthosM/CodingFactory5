@@ -1,6 +1,9 @@
 package cf5.services.dao;
 
 import cf5.dto.ClassRoomDTO;
+import cf5.dto.TeacherDTO;
+import cf5.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
@@ -11,21 +14,23 @@ import java.util.Optional;
 @Service
 public class ClassRoomService extends AbstractService<ClassRoomDTO> {
     private static final String querySelectOne =
-            "SELECT CR.ID, CR.NAME, T.ID AS TEACHER_ID, TU.FIRSTNAME AS TEACHER_FIRSTNAME, TU.LASTNAME AS TEACHER_LASTNAME, L.ID AS LESSON_ID, L.NAME AS LESSON_NAME " +
+            "SELECT CR.ID, CR.NAME, T.USER_ID AS TEACHER_USER_ID, TU.FIRSTNAME AS TEACHER_FIRSTNAME, TU.LASTNAME AS TEACHER_LASTNAME, L.ID AS LESSON_ID, L.NAME AS LESSON_NAME " +
                     "FROM CLASSROOMS CR " +
                     "LEFT JOIN TEACHERS T ON T.ID = CR.TEACHER_ID " +
-                    "LEFT JOIN USERS TU ON TU.ID = T.ID " +
+                    "LEFT JOIN USERS TU ON TU.ID = T.USER_ID " +
                     "LEFT JOIN LESSONS L ON L.ID = CR.LESSON_ID " +
                     "WHERE CR.ID = ?";
     private static final String querySelectAll =
-            "SELECT CR.ID, CR.NAME, T.ID AS TEACHER_ID, TU.FIRSTNAME AS TEACHER_FIRSTNAME, TU.LASTNAME AS TEACHER_LASTNAME, L.ID AS LESSON_ID, L.NAME AS LESSON_NAME " +
+            "SELECT CR.ID, CR.NAME, T.USER_ID AS TEACHER_USER_ID, TU.FIRSTNAME AS TEACHER_FIRSTNAME, TU.LASTNAME AS TEACHER_LASTNAME, L.ID AS LESSON_ID, L.NAME AS LESSON_NAME " +
                     "FROM CLASSROOMS CR " +
                     "LEFT JOIN TEACHERS T ON T.ID = CR.TEACHER_ID " +
-                    "LEFT JOIN USERS TU ON TU.ID = T.ID " +
+                    "LEFT JOIN USERS TU ON TU.ID = T.USER_ID " +
                     "LEFT JOIN LESSONS L ON L.ID = CR.LESSON_ID ";
     private static final String queryInsertOne = "INSERT INTO CLASSROOMS (NAME, TEACHER_ID, LESSON_ID) VALUES (?, ?, ?)";
     private static final String queryUpdateOne = "UPDATE CLASSROOMS SET NAME = ?, TEACHER_ID = ?, LESSON_ID = ? WHERE ID = ?";
     private static final String queryDeleteOne = "DELETE FROM CLASSROOMS WHERE ID = ?";
+
+    private @Autowired TeachersService teachersService;
 
     @Override
     public Optional<ClassRoomDTO> findByKeys(Object... keyValues) throws SQLException {
@@ -39,7 +44,8 @@ public class ClassRoomService extends AbstractService<ClassRoomDTO> {
 
     @Override
     public void insert(ClassRoomDTO classRoomDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
-        super.defaultInsert(ClassRoomDTO.newConverter(), queryInsertOne);
+        TeacherDTO teacherDTO = teachersService.findByUserId(classRoomDTO.teacherUserId()).orElseThrow();
+        getJdbcIO().executeQuery(getDefaultDataSource(), queryInsertOne, classRoomDTO.name(), teacherDTO.recId(), classRoomDTO.lessonId());
     }
 
     @Override

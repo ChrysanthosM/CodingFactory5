@@ -14,7 +14,7 @@
                 <fieldset class="form-group">
                     <form:label path="userId" class="form-label">Select User for Teacher</form:label>
                     <form:select path="userId" class="form-control">
-                        <form:options items="${usersList}" itemValue="recId" itemLabel="fullName" />
+                        <form:options items="${teachersList}" itemValue="recId" itemLabel="fullName" />
                     </form:select>
                     <form:errors path="userId" cssClass="text-warning" />
                 </fieldset>
