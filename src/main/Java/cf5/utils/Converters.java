@@ -22,4 +22,8 @@ public final class Converters {
         String formattedDate = formatter.format(date);
         return formattedDate;
     }
+
+    public static String getFullName(String firstName, String lastName) {
+        return StringUtils.trimToEmpty(firstName).concat(StringUtils.SPACE).concat(StringUtils.trimToEmpty(lastName)).trim();
+    }
 }

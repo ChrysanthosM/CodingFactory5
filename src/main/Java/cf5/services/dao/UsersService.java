@@ -18,6 +18,7 @@ public class UsersService extends AbstractService<UserDTO> {
 
     private static final String querySelectByUserName = "SELECT * FROM USERS WHERE USERNAME = ?";
     private static final String queryCountByUserNamePassword = "SELECT COUNT(*) FROM USERS WHERE UPPER(USERNAME) = UPPER(?) AND PASSWORD = ?";
+    private static final String querySelectAllTeachers = "SELECT * FROM USERS WHERE ID IN (SELECT USER_ID FROM TEACHERS)";
 
     @Override
     public Optional<UserDTO> findByKeys(Object... keyValues) throws SQLException {
@@ -27,6 +28,11 @@ public class UsersService extends AbstractService<UserDTO> {
     public List<UserDTO> getAll() throws SQLException {
         return super.defaultSelectAll(UserDTO.newConverter(), querySelectAll);
     }
+
+    public List<UserDTO> getAllTeachers() throws SQLException {
+        return getJdbcIO().select(getDefaultDataSource(), UserDTO.newConverter(), querySelectAllTeachers);
+    }
+
     @Override
     public void insert(UserDTO userDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
         super.defaultInsert(userDTO, queryInsertOne);

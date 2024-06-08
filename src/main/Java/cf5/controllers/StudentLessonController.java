@@ -1,37 +1,23 @@
 package cf5.controllers;
 
 import cf5.AppConfig;
-import cf5.dto.StudentDTO;
 import cf5.dto.StudentLessonDTO;
 import cf5.dto.UserDTO;
-import cf5.model.Student;
 import cf5.model.StudentLesson;
 import cf5.services.dao.StudentsLessonsService;
-import cf5.services.dao.StudentsService;
 import cf5.services.dao.UsersService;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.ValidationException;
-import javax.validation.constraints.NotNull;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;

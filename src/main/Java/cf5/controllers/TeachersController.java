@@ -11,7 +11,6 @@ import com.google.common.collect.Lists;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -64,7 +63,7 @@ public class TeachersController extends AbstractController {
     public String addTeacher(ModelMap modelMap) {
         List<UserForCombo> usersList = Lists.newArrayList();
         try {
-            List<UserDTO> userDTOs = usersService.getAll();
+            List<UserDTO> userDTOs = usersService.getAllTeachers();
             if (CollectionUtils.isNotEmpty(userDTOs)) usersList = userDTOs.stream().map(UserForCombo::convertFrom).toList();
         } catch (SQLException e) {
             log.atError().log("GET addTeacher failed: " + e.getMessage());
@@ -121,7 +120,7 @@ public class TeachersController extends AbstractController {
             Optional<TeacherDTO> teacherDTO = teachersService.findByKeys(id);
             if (teacherDTO.isEmpty()) return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
             Teacher teacher = Teacher.convertFrom(teacherDTO.orElseThrow());
-            List<UserDTO> userDTOs = usersService.getAll();
+            List<UserDTO> userDTOs = usersService.getAllTeachers();
             if (CollectionUtils.isNotEmpty(userDTOs)) usersList = userDTOs.stream().map(UserForCombo::convertFrom).toList();
             modelMap.put("teacher", teacher);
             modelMap.put("usersList", usersList);

@@ -10,11 +10,22 @@ import java.util.Optional;
 
 @Service
 public class ClassRoomService extends AbstractService<ClassRoomDTO> {
-    private static final String querySelectOne = "SELECT * FROM CLASSROOM WHERE ID = ?";
-    private static final String querySelectAll = "SELECT * FROM CLASSROOM";
-    private static final String queryInsertOne = "INSERT INTO CLASSROOM (NAME, TEACHER_ID, LESSON_ID) VALUES (?, ?, ?)";
-    private static final String queryUpdateOne = "UPDATE CLASSROOM SET NAME = ?, TEACHER_ID = ?, LESSON_ID = ? WHERE ID = ?";
-    private static final String queryDeleteOne = "DELETE FROM CLASSROOM WHERE ID = ?";
+    private static final String querySelectOne =
+            "SELECT CR.ID, CR.NAME, T.ID AS TEACHER_ID, TU.FIRSTNAME AS TEACHER_FIRSTNAME, TU.LASTNAME AS TEACHER_LASTNAME, L.ID AS LESSON_ID, L.NAME AS LESSON_NAME " +
+                    "FROM CLASSROOMS CR " +
+                    "LEFT JOIN TEACHERS T ON T.ID = CR.TEACHER_ID " +
+                    "LEFT JOIN USERS TU ON TU.ID = T.ID " +
+                    "LEFT JOIN LESSONS L ON L.ID = CR.LESSON_ID " +
+                    "WHERE CR.ID = ?";
+    private static final String querySelectAll =
+            "SELECT CR.ID, CR.NAME, T.ID AS TEACHER_ID, TU.FIRSTNAME AS TEACHER_FIRSTNAME, TU.LASTNAME AS TEACHER_LASTNAME, L.ID AS LESSON_ID, L.NAME AS LESSON_NAME " +
+                    "FROM CLASSROOMS CR " +
+                    "LEFT JOIN TEACHERS T ON T.ID = CR.TEACHER_ID " +
+                    "LEFT JOIN USERS TU ON TU.ID = T.ID " +
+                    "LEFT JOIN LESSONS L ON L.ID = CR.LESSON_ID ";
+    private static final String queryInsertOne = "INSERT INTO CLASSROOMS (NAME, TEACHER_ID, LESSON_ID) VALUES (?, ?, ?)";
+    private static final String queryUpdateOne = "UPDATE CLASSROOMS SET NAME = ?, TEACHER_ID = ?, LESSON_ID = ? WHERE ID = ?";
+    private static final String queryDeleteOne = "DELETE FROM CLASSROOMS WHERE ID = ?";
 
     @Override
     public Optional<ClassRoomDTO> findByKeys(Object... keyValues) throws SQLException {

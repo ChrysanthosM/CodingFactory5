@@ -2,8 +2,11 @@ package cf5.controllers;
 
 import cf5.AppConfig;
 import cf5.dto.ClassRoomDTO;
+import cf5.dto.UserDTO;
 import cf5.model.ClassRoom;
+import cf5.model.UserForCombo;
 import cf5.services.dao.ClassRoomService;
+import cf5.services.dao.UsersService;
 import com.google.common.collect.Lists;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +25,12 @@ import javax.validation.constraints.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @Slf4j
 public class ClassRoomController extends AbstractController {
     private @Autowired ClassRoomService classRoomService;
+    private @Autowired UsersService usersService;
 
     @RequestMapping(value = "listClassRooms", method = RequestMethod.GET)
     public String listClassRooms (ModelMap modelMap) {
@@ -46,8 +49,19 @@ public class ClassRoomController extends AbstractController {
 
     @RequestMapping(value = "addClassRoom", method = RequestMethod.GET)
     public String addClassRoom(ModelMap modelMap) {
+        List<UserForCombo> usersList = Lists.newArrayList();
+        try {
+            List<UserDTO> userDTOs = usersService.getAllTeachers();
+            if (CollectionUtils.isNotEmpty(userDTOs)) usersList = userDTOs.stream().map(UserForCombo::convertFrom).toList();
+        } catch (SQLException e) {
+            log.atError().log("GET addClassRoom failed: " + e.getMessage());
+            modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getPage();
+        }
         modelMap.put("classRoom", ClassRoom.getEmpty());
-        return AppConfig.ApplicationPages.ADD_CLASS_ROOM_PAGE.getPage();
+        modelMap.put("usersList", usersList);
+        modelMap.put("submitButton", "Add");
+        return AppConfig.ApplicationPages.CLASS_ROOM_PAGE.getPage();
     }
     @RequestMapping(value = "addClassRoom", method = RequestMethod.POST)
     public String addClassRoom(ModelMap modelMap, @Valid ClassRoom classRoom, BindingResult bindingResult) {
