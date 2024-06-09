@@ -50,7 +50,8 @@ public class ClassRoomService extends AbstractService<ClassRoomDTO> {
 
     @Override
     public void update(ClassRoomDTO classRoomDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
-        super.defaultUpdate(ClassRoomDTO.newConverter(), queryUpdateOne);
+        TeacherDTO teacherDTO = teachersService.findByUserId(classRoomDTO.teacherUserId()).orElseThrow();
+        getJdbcIO().executeQuery(getDefaultDataSource(), queryUpdateOne, classRoomDTO.name(), teacherDTO.recId(), classRoomDTO.lessonId(), classRoomDTO.recId());
     }
 
     @Override

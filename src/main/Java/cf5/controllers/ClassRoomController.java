@@ -28,6 +28,7 @@ import javax.validation.constraints.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -119,40 +120,48 @@ public class ClassRoomController extends AbstractController {
         return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getRedirect();
     }
 
-//    @RequestMapping(value = "updateClassRoom", method = RequestMethod.GET)
-//    public String updateClassRoom(ModelMap modelMap, @RequestParam @NotNull @NonNegative int id) {
-//        List<UserForCombo> usersList = Lists.newArrayList();
-//        try {
-//            Optional<TeacherDTO> teacherDTO = teachersService.findByKeys(id);
-//            if (teacherDTO.isEmpty()) return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
-//            Teacher teacher = Teacher.convertFrom(teacherDTO.orElseThrow());
-//            List<UserDTO> userDTOs = usersService.getAll();
-//            if (CollectionUtils.isNotEmpty(userDTOs)) usersList = userDTOs.stream().map(UserForCombo::convertFrom).toList();
-//            modelMap.put("teacher", teacher);
-//            modelMap.put("usersList", usersList);
-//            modelMap.put("submitButton", "Update");
-//        } catch (SQLException e) {
-//            log.atError().log("GET updateTeacher failed: " + e.getMessage());
-//            modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
-//            modelMap.put("submitButton", "Update");
-//            return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
-//        }
-//        return AppConfig.ApplicationPages.TEACHER_PAGE.getPage();
-//    }
-//
-//    @RequestMapping(value = "updateTeacher", method = RequestMethod.POST)
-//    public String updateTeacher(ModelMap modelMap, @Valid Teacher teacher, BindingResult result) {
-//        if (result.hasErrors()) {
-//            modelMap.put("submitButton", "Update");
-//            return AppConfig.ApplicationPages.TEACHER_PAGE.getPage();
-//        }
-//        try {
-//            teachersService.update(teacher.toDTO());
-//        } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
-//            log.atError().log("POST updateTeacher failed: " + e.getMessage());
-//            modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
-//            return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
-//        }
-//        return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getRedirect();
-//    }
+    @RequestMapping(value = "updateClassRoom", method = RequestMethod.GET)
+    public String updateClassRoom(ModelMap modelMap, @RequestParam @NotNull @NonNegative int id) {
+        List<UserForCombo> usersList = Lists.newArrayList();
+        try {
+            Optional<ClassRoomDTO> classRoomDTO = classRoomService.findByKeys(id);
+            if (classRoomDTO.isEmpty()) return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getPage();
+            ClassRoom classRoom = ClassRoom.convertFrom(classRoomDTO.orElseThrow());
+
+            modelMap.put("classRoom", classRoom);
+            modelMap.put("teachersList", usersService.getAllTeachers());
+            modelMap.put("lessonsList", lessonsService.getAll().stream().map(Lesson::convertFrom).toList());
+            modelMap.put("submitButton", "Update");
+        } catch (SQLException e) {
+            log.atError().log("GET updateClassRoom failed: " + e.getMessage());
+            modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            modelMap.put("submitButton", "Update");
+            return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getPage();
+        }
+        return AppConfig.ApplicationPages.CLASSROOM_PAGE.getPage();
+    }
+
+    @RequestMapping(value = "updateClassRoom", method = RequestMethod.POST)
+    public String updateClassRoom(ModelMap modelMap, @Valid ClassRoom classRoom, BindingResult result) {
+        if (result.hasErrors()) {
+            try {
+                modelMap.put("teachersList", usersService.getAllTeachers());
+                modelMap.put("lessonsList", lessonsService.getAll().stream().map(Lesson::convertFrom).toList());
+            } catch (SQLException e) {
+                log.atError().log("GET updateClassRoom failed: " + e.getMessage());
+                modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+                modelMap.put("submitButton", "Update");
+            }
+            modelMap.put("submitButton", "Update");
+            return AppConfig.ApplicationPages.CLASSROOM_PAGE.getPage();
+        }
+        try {
+            classRoomService.update(classRoom.toDTO());
+        } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
+            log.atError().log("POST updateClassRoom failed: " + e.getMessage());
+            modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getPage();
+        }
+        return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getRedirect();
+    }
 }
