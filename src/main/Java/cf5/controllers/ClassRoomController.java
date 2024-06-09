@@ -147,7 +147,6 @@ public class ClassRoomController extends AbstractController {
         }
         return AppConfig.ApplicationPages.CLASSROOM_PAGE.getPage();
     }
-
     @RequestMapping(value = "updateClassRoom", method = RequestMethod.POST)
     public String updateClassRoom(ModelMap modelMap, @Valid ClassRoom classRoom, BindingResult result) {
         if (result.hasErrors()) {
