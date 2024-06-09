@@ -11,9 +11,11 @@ import cf5.services.dao.ClassRoomService;
 import cf5.services.dao.LessonsService;
 import cf5.services.dao.UsersService;
 import com.google.common.collect.Lists;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,7 @@ import javax.validation.constraints.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Controller
@@ -38,9 +41,13 @@ public class ClassRoomController extends AbstractController {
     private @Autowired LessonsService lessonsService;
 
     @RequestMapping(value = "listClassRooms", method = RequestMethod.GET)
-    public String listClassRooms (ModelMap modelMap) {
+    public String listClassRooms (HttpSession httpSession, ModelMap modelMap) {
         try {
-            List<ClassRoomDTO> classRoomDTOs = classRoomService.getAll();
+            putValueToModelFromSession(httpSession, modelMap, "username");
+            String username = (String) modelMap.getAttribute ("username");
+            if (StringUtils.isBlank(username)) throw new NoSuchElementException("username not detected");
+            UserDTO userDto = usersService.getByUserName(username).orElseThrow() ;
+            List<ClassRoomDTO> classRoomDTOs = userDto.roleId() == 0 ? classRoomService.getAll() : classRoomService.getClassesForTeacher(userDto) ;
             if (CollectionUtils.isEmpty(classRoomDTOs)) return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getPage();
             List<ClassRoom> classRoomsList = classRoomDTOs.stream().map(ClassRoom::convertFrom).toList();
             modelMap.put("classRoomsList", classRoomsList);
