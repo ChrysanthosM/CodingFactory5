@@ -6,9 +6,11 @@ import cf5.dto.LessonDTO;
 import cf5.dto.UserDTO;
 import cf5.model.ClassRoom;
 import cf5.model.Lesson;
+import cf5.model.Student;
 import cf5.model.UserForCombo;
 import cf5.services.dao.ClassRoomService;
 import cf5.services.dao.LessonsService;
+import cf5.services.dao.StudentsService;
 import cf5.services.dao.UsersService;
 import com.google.common.collect.Lists;
 import jakarta.servlet.http.HttpSession;
@@ -39,6 +41,7 @@ public class ClassRoomController extends AbstractController {
     private @Autowired ClassRoomService classRoomService;
     private @Autowired UsersService usersService;
     private @Autowired LessonsService lessonsService;
+    private @Autowired StudentsService studentsService;
 
     @RequestMapping(value = "listClassRooms", method = RequestMethod.GET)
     public String listClassRooms (HttpSession httpSession, ModelMap modelMap) {
@@ -74,6 +77,7 @@ public class ClassRoomController extends AbstractController {
         modelMap.put("classRoom", ClassRoom.getEmpty());
         modelMap.put("teachersList", teachersList);
         modelMap.put("lessonsList", lessonsList);
+        modelMap.put("studentsList", null);
         modelMap.put("submitButton", "Add");
         return AppConfig.ApplicationPages.CLASS_ROOM_PAGE.getPage();
     }
@@ -92,6 +96,7 @@ public class ClassRoomController extends AbstractController {
             }
             modelMap.put("teachersList", teachersList);
             modelMap.put("lessonsList", lessonsList);
+            modelMap.put("studentsList", null);
             modelMap.put("submitButton", "Add");
             return AppConfig.ApplicationPages.CLASSROOM_PAGE.getPage();
         }
@@ -129,7 +134,6 @@ public class ClassRoomController extends AbstractController {
 
     @RequestMapping(value = "updateClassRoom", method = RequestMethod.GET)
     public String updateClassRoom(ModelMap modelMap, @RequestParam @NotNull @NonNegative int id) {
-        List<UserForCombo> usersList = Lists.newArrayList();
         try {
             Optional<ClassRoomDTO> classRoomDTO = classRoomService.findByKeys(id);
             if (classRoomDTO.isEmpty()) return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getPage();
@@ -137,6 +141,7 @@ public class ClassRoomController extends AbstractController {
 
             modelMap.put("classRoom", classRoom);
             modelMap.put("teachersList", usersService.getAllTeachers());
+            modelMap.put("studentsList", studentsService.getStudentsForLesson(classRoom.lessonId()));
             modelMap.put("lessonsList", lessonsService.getAll().stream().map(Lesson::convertFrom).toList());
             modelMap.put("submitButton", "Update");
         } catch (SQLException e) {
@@ -153,6 +158,7 @@ public class ClassRoomController extends AbstractController {
             try {
                 modelMap.put("teachersList", usersService.getAllTeachers());
                 modelMap.put("lessonsList", lessonsService.getAll().stream().map(Lesson::convertFrom).toList());
+                modelMap.put("studentsList", studentsService.getStudentsForLesson(classRoom.lessonId()));
             } catch (SQLException e) {
                 log.atError().log("GET updateClassRoom failed: " + e.getMessage());
                 modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
@@ -169,5 +175,24 @@ public class ClassRoomController extends AbstractController {
             return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getPage();
         }
         return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getRedirect();
+    }
+
+    @RequestMapping(value = "viewClassRoom", method = RequestMethod.GET)
+    public String viewClassRoom(ModelMap modelMap, @RequestParam @NotNull @NonNegative int id) {
+        try {
+            Optional<ClassRoomDTO> classRoomDTO = classRoomService.findByKeys(id);
+            if (classRoomDTO.isEmpty()) return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getPage();
+            ClassRoom classRoom = ClassRoom.convertFrom(classRoomDTO.orElseThrow());
+
+            modelMap.put("classRoom", classRoom);
+            modelMap.put("teachersList", usersService.getAllTeachers());
+            modelMap.put("studentsList", studentsService.getStudentsForLesson(classRoom.lessonId()));
+            modelMap.put("lessonsList", lessonsService.getAll().stream().map(Lesson::convertFrom).toList());
+        } catch (SQLException e) {
+            log.atError().log("GET updateClassRoom failed: " + e.getMessage());
+            modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
+            return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getPage();
+        }
+        return AppConfig.ApplicationPages.CLASSROOM_PAGE.getPage();
     }
 }

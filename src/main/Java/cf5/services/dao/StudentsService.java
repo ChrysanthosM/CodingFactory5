@@ -26,6 +26,12 @@ public class StudentsService extends AbstractService<StudentDTO> {
     private static final String queryDeleteOne = "DELETE FROM STUDENTS WHERE ID = ?";
     private static final String queryCountByName = "SELECT COUNT(*) FROM STUDENTS WHERE USER_ID = ?";
 
+    private static final String querySelectStudentsForLesson =
+            "SELECT T.ID, T.USER_ID, U.FIRSTNAME, U.LASTNAME, T.EMAIL, T.PHONE, U.BIRTHDATE " +
+                    "FROM STUDENTS T " +
+                    "JOIN USERS U ON T.USER_ID = U.ID " +
+                    "WHERE T.USER_ID IN (SELECT STUDENT_ID FROM STUDENT_LESSONS WHERE LESSON_ID = ?)";
+
     @Override
     public Optional<StudentDTO> findByKeys(Object... keyValues) throws SQLException {
         return super.defaultSelectOne(StudentDTO.newConverter(), querySelectOne, keyValues);
@@ -34,6 +40,10 @@ public class StudentsService extends AbstractService<StudentDTO> {
     public List<StudentDTO> getAll() throws SQLException {
         return super.defaultSelectAll(StudentDTO.newConverter(), querySelectAll);
     }
+    public List<StudentDTO> getStudentsForLesson(int lessonId) throws SQLException {
+        return getJdbcIO().select(getDefaultDataSource(), StudentDTO.newConverter(), querySelectStudentsForLesson, lessonId);
+    }
+
     @Override
     public void insert(StudentDTO studentDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
         if (checkStudentExist(studentDTO.userId())) throw new ValidationException("Student already exist");

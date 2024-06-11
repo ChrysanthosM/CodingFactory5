@@ -22,7 +22,7 @@ public class UsersService extends AbstractService<UserDTO> {
 
     private static final String querySelectByUserName = "SELECT * FROM USERS WHERE USERNAME = ?";
     private static final String queryCountByUserNamePassword = "SELECT COUNT(*) FROM USERS WHERE UPPER(USERNAME) = UPPER(?) AND PASSWORD = ?";
-    private static final String querySelectAllTeachers = "SELECT * FROM USERS WHERE ID IN (SELECT USER_ID FROM TEACHERS)";
+    private static final String querySelectAllTeachers = "SELECT * FROM USERS WHERE ID IN (SELECT USER_ID FROM TEACHERS WHERE VERIFIED = '1')";
 
     @Override
     public Optional<UserDTO> findByKeys(Object... keyValues) throws SQLException {

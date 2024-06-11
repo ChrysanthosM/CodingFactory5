@@ -33,6 +33,9 @@
                             <td><a class="btn btn-success" href="/updateClassRoom?id=${classRoom.recId()}">Update</a></td>
                             <td><a class="btn btn-warning" href="/deleteClassRoom?id=${classRoom.recId()}" onclick="return confirmDelete()">Delete</a></td>
                         </c:if>
+                        <c:if test="${roleId == 1}">
+                            <td><a class="btn btn-success" href="/viewClassRoom?id=${classRoom.recId()}">View</a></td>
+                        </c:if>
                     </tr>
                 </c:forEach>
             </tbody>
