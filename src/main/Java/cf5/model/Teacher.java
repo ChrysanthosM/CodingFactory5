@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.hibernate.validator.constraints.Range;
 
 public record Teacher(@NonNegative int recId, @NonNegative int userId,
                       String firstName, String lastName,
@@ -23,5 +22,5 @@ public record Teacher(@NonNegative int recId, @NonNegative int userId,
         if (verified == null) verified = StringUtils.defaultString("0");
     }
 
-    public TeacherDTO toDTO() { return new TeacherDTO(recId, userId, firstName, lastName, phone, email, verified); };
+    public TeacherDTO toDTO() { return new TeacherDTO(recId, userId, firstName, lastName, phone, email, verified); }
 }

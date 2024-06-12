@@ -54,19 +54,19 @@ public class ClassRoomService extends AbstractService<ClassRoomDTO> {
 
 
     @Override
-    public void insert(ClassRoomDTO classRoomDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
+    public void insert(ClassRoomDTO classRoomDTO) throws SQLException {
         TeacherDTO teacherDTO = teachersService.findByUserId(classRoomDTO.teacherUserId()).orElseThrow();
         getJdbcIO().executeQuery(getDefaultDataSource(), queryInsertOne, classRoomDTO.name(), teacherDTO.recId(), classRoomDTO.lessonId());
     }
 
     @Override
-    public void update(ClassRoomDTO classRoomDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
+    public void update(ClassRoomDTO classRoomDTO) throws SQLException {
         TeacherDTO teacherDTO = teachersService.findByUserId(classRoomDTO.teacherUserId()).orElseThrow();
         getJdbcIO().executeQuery(getDefaultDataSource(), queryUpdateOne, classRoomDTO.name(), teacherDTO.recId(), classRoomDTO.lessonId(), classRoomDTO.recId());
     }
 
     @Override
-    public void delete(int id) throws SQLException, InvocationTargetException, IllegalAccessException {
+    public void delete(int id) throws SQLException {
         super.defaultDelete(id, queryDeleteOne);
     }
 }

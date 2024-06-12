@@ -23,7 +23,12 @@ public class LoginController extends AbstractController {
     private @Autowired UsersService usersService;
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public String logout(HttpSession httpSession, ModelMap modelMap) {
+    public String postLogout(HttpSession httpSession, ModelMap modelMap) {
+        clearAttributes(httpSession, modelMap);
+        return AppConfig.ApplicationPages.LOGIN_PAGE.getRedirect();
+    }
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    public String getLogout(HttpSession httpSession, ModelMap modelMap) {
         clearAttributes(httpSession, modelMap);
         return AppConfig.ApplicationPages.LOGIN_PAGE.getRedirect();
     }

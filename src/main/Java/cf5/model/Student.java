@@ -17,5 +17,5 @@ public record Student(@NonNegative int recId,  @NonNegative int userId,
         return new Student(dto.recId(), dto.userId(), dto.firstName(), dto.lastName(), dto.phone(), dto.email(), dto.birthDate());
     }
 
-    public StudentDTO toDTO() { return new StudentDTO(recId, userId, firstName, lastName, phone, email, new Date()); };
+    public StudentDTO toDTO() { return new StudentDTO(recId, userId, firstName, lastName, phone, email, new Date()); }
 }

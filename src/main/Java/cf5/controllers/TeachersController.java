@@ -2,12 +2,10 @@ package cf5.controllers;
 
 import cf5.AppConfig;
 import cf5.dto.TeacherDTO;
-import cf5.dto.UserDTO;
 import cf5.model.Teacher;
 import cf5.model.UserForCombo;
 import cf5.services.dao.TeachersService;
 import cf5.services.dao.UsersService;
-import com.google.common.collect.Lists;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -95,7 +93,7 @@ public class TeachersController extends AbstractController {
             modelMap.put("errorMessage", "Validation Error: " + e.getMessage());
             modelMap.put("submitButton", "Add");
             return AppConfig.ApplicationPages.TEACHER_PAGE.getPage();
-        } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
+        } catch (SQLException e) {
             log.atError().log("POST addTeacher failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             modelMap.put("submitButton", "Add");
@@ -147,7 +145,7 @@ public class TeachersController extends AbstractController {
         }
         try {
             teachersService.update(teacher.toDTO());
-        } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
+        } catch (SQLException e) {
             log.atError().log("POST updateTeacher failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();

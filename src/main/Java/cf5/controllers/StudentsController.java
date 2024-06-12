@@ -72,7 +72,7 @@ public class StudentsController extends AbstractController {
             modelMap.put("errorMessage", "Validation Error: " + e.getMessage());
             modelMap.put("submitButton", "Add");
             return AppConfig.ApplicationPages.STUDENT_PAGE.getPage();
-        } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
+        } catch (SQLException e) {
             log.atError().log("addStudent failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             modelMap.put("submitButton", "Add");
@@ -123,7 +123,7 @@ public class StudentsController extends AbstractController {
         }
         try {
             studentsService.update(student.toDTO());
-        } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
+        } catch (SQLException e) {
             log.atError().log("POST updateStudent failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.STUDENTS_LIST_PAGE.getPage();

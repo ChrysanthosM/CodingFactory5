@@ -2,17 +2,14 @@ package cf5.controllers;
 
 import cf5.AppConfig;
 import cf5.dto.ClassRoomDTO;
-import cf5.dto.LessonDTO;
 import cf5.dto.UserDTO;
 import cf5.model.ClassRoom;
 import cf5.model.Lesson;
-import cf5.model.Student;
 import cf5.model.UserForCombo;
 import cf5.services.dao.ClassRoomService;
 import cf5.services.dao.LessonsService;
 import cf5.services.dao.StudentsService;
 import cf5.services.dao.UsersService;
-import com.google.common.collect.Lists;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -106,7 +103,7 @@ public class ClassRoomController extends AbstractController {
             modelMap.put("errorMessage", "Validation Error: " + e.getMessage());
             modelMap.put("submitButton", "Add");
             return AppConfig.ApplicationPages.CLASSROOM_PAGE.getPage();
-        } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
+        } catch (SQLException e) {
             log.atError().log("POST addClassRoom failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             modelMap.put("submitButton", "Add");
@@ -169,7 +166,7 @@ public class ClassRoomController extends AbstractController {
         }
         try {
             classRoomService.update(classRoom.toDTO());
-        } catch (SQLException | InvocationTargetException | IllegalAccessException e) {
+        } catch (SQLException e) {
             log.atError().log("POST updateClassRoom failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
             return AppConfig.ApplicationPages.CLASSROOMS_LIST_PAGE.getPage();

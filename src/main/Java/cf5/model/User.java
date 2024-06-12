@@ -23,5 +23,5 @@ public record User(@NonNegative int recId,
         return new User(dto.recId(), dto.userName(), dto.password(), dto.password(), dto.firstName(), dto.lastName(), dto.email(), dto.phone(), dto.roleId(), dto.birthDate());
     }
 
-    public UserDTO toDTO() { return new UserDTO(recId, username, password, firstName, lastName, email, phone, roleId, birthDate); };
+    public UserDTO toDTO() { return new UserDTO(recId, username, password, firstName, lastName, email, phone, roleId, birthDate); }
 }

@@ -19,8 +19,7 @@ public final class Converters {
     }
     public static String convertDateToString(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String formattedDate = formatter.format(date);
-        return formattedDate;
+        return formatter.format(date);
     }
 
     public static String getFullName(String firstName, String lastName) {

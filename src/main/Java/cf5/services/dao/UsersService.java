@@ -4,7 +4,6 @@ import cf5.dto.UserDTO;
 import cf5.model.UserForCombo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;

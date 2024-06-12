@@ -13,5 +13,5 @@ public record StudentLesson(@NonNegative int studentId, @NonNegative int lessonI
         return new StudentLesson(dto.studentId(), dto.lessonId(), dto.lessonName(), dto.selected());
     }
 
-    public StudentLessonDTO toDTO() { return new StudentLessonDTO(studentId, lessonId, lessonName, selected); };
+    public StudentLessonDTO toDTO() { return new StudentLessonDTO(studentId, lessonId, lessonName, selected); }
 }

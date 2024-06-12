@@ -1,10 +1,8 @@
 package cf5.model;
 
 import cf5.dto.ClassRoomDTO;
-import cf5.dto.StudentLessonDTO;
 import cf5.utils.Converters;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -18,5 +16,5 @@ public record ClassRoom(@NonNegative int recId,
         return new ClassRoom(dto.recId() , dto.name(), dto.teacherUserId(), Converters.getFullName(dto.teacherFirstName(), dto.teacherLastName()), dto.lessonId(), dto.lessonName());
     }
 
-    public ClassRoomDTO toDTO() { return new ClassRoomDTO(recId, classRoomName, teacherUserId, null, null, lessonId, lessonName); };
+    public ClassRoomDTO toDTO() { return new ClassRoomDTO(recId, classRoomName, teacherUserId, null, null, lessonId, lessonName); }
 }

@@ -45,12 +45,12 @@ public class StudentsService extends AbstractService<StudentDTO> {
     }
 
     @Override
-    public void insert(StudentDTO studentDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
+    public void insert(StudentDTO studentDTO) throws SQLException {
         if (checkStudentExist(studentDTO.userId())) throw new ValidationException("Student already exist");
         getJdbcIO().executeQuery(getDefaultDataSource(), queryInsertOne, Lists.newArrayList(studentDTO.userId(), studentDTO.phone(), studentDTO.email()).toArray());
     }
     @Override
-    public void update(StudentDTO studentDTO) throws SQLException, InvocationTargetException, IllegalAccessException {
+    public void update(StudentDTO studentDTO) throws SQLException {
         getJdbcIO().executeQuery(getDefaultDataSource(), queryUpdateOne, Lists.newArrayList(studentDTO.userId(), studentDTO.phone(), studentDTO.email(), studentDTO.recId()).toArray());
     }
     @Override

@@ -13,5 +13,5 @@ public record Lesson(@NonNegative int recId,
         return new Lesson(dto.recId(), dto.name());
     }
 
-    public LessonDTO toDTO() { return new LessonDTO(recId, name); };
+    public LessonDTO toDTO() { return new LessonDTO(recId, name); }
 }
