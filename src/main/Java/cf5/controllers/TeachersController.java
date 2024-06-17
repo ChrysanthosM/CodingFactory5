@@ -61,7 +61,7 @@ public class TeachersController extends AbstractController {
     public String addTeacher(ModelMap modelMap) {
         List<UserForCombo> teachersList;
         try {
-            teachersList = usersService.getAllTeachers();
+            teachersList = usersService.getAllTeachers(false);
         } catch (SQLException e) {
             log.atError().log("GET addTeacher failed: " + e.getMessage());
             modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
@@ -77,7 +77,7 @@ public class TeachersController extends AbstractController {
         if (bindingResult.hasErrors()) {
             List<UserForCombo> teachersList;
             try {
-                teachersList = usersService.getAllTeachers();
+                teachersList = usersService.getAllTeachers(false);
             } catch (SQLException e) {
                 log.atError().log("POST addTeacher failed: " + e.getMessage());
                 modelMap.put("errorMessage", "Oops... Something went wrong. (" + e.getMessage() + ")");
@@ -126,7 +126,7 @@ public class TeachersController extends AbstractController {
             if (teacherDTO.isEmpty()) return AppConfig.ApplicationPages.TEACHERS_LIST_PAGE.getPage();
             Teacher teacher = Teacher.convertFrom(teacherDTO.orElseThrow());
             modelMap.put("teacher", teacher);
-            modelMap.put("teachersList", usersService.getAllTeachers());
+            modelMap.put("teachersList", usersService.getAllTeachers(false));
             modelMap.put("submitButton", "Update");
         } catch (SQLException e) {
             log.atError().log("GET updateTeacher failed: " + e.getMessage());

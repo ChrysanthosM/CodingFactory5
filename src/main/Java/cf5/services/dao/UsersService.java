@@ -4,6 +4,7 @@ import cf5.dto.UserDTO;
 import cf5.model.UserForCombo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
@@ -21,7 +22,8 @@ public class UsersService extends AbstractService<UserDTO> {
 
     private static final String querySelectByUserName = "SELECT * FROM USERS WHERE USERNAME = ?";
     private static final String queryCountByUserNamePassword = "SELECT COUNT(*) FROM USERS WHERE UPPER(USERNAME) = UPPER(?) AND PASSWORD = ?";
-    private static final String querySelectAllTeachers = "SELECT * FROM USERS WHERE ID IN (SELECT USER_ID FROM TEACHERS WHERE VERIFIED = '1')";
+    private static final String querySelectAllTeachers = "SELECT * FROM USERS WHERE ID IN (SELECT USER_ID FROM TEACHERS {verified})";
+    private static final String queryWhereTeachersVerified = "WHERE VERIFIED = '1'";
 
     @Override
     public Optional<UserDTO> findByKeys(Object... keyValues) throws SQLException {
@@ -32,9 +34,10 @@ public class UsersService extends AbstractService<UserDTO> {
         return super.defaultSelectAll(UserDTO.newConverter(), querySelectAll);
     }
 
-    public List<UserForCombo> getAllTeachers() throws SQLException {
+    public List<UserForCombo> getAllTeachers(boolean verified) throws SQLException {
         List<UserForCombo> teachersList = Lists.newArrayList();
-        List<UserDTO> userDTOs = getJdbcIO().select(getDefaultDataSource(), UserDTO.newConverter(), querySelectAllTeachers);
+        String query = querySelectAllTeachers.replace("{verified}", verified ? queryWhereTeachersVerified : StringUtils.EMPTY);
+        List<UserDTO> userDTOs = getJdbcIO().select(getDefaultDataSource(), UserDTO.newConverter(), query);
         if (CollectionUtils.isNotEmpty(userDTOs)) teachersList = userDTOs.stream().map(UserForCombo::convertFrom).toList();
         return teachersList;
     }

@@ -64,7 +64,7 @@ public class ClassRoomController extends AbstractController {
         List<UserForCombo> teachersList;
         List<Lesson> lessonsList;
         try {
-            teachersList = usersService.getAllTeachers();
+            teachersList = usersService.getAllTeachers(true);
             lessonsList = lessonsService.getAll().stream().map(Lesson::convertFrom).toList();
         } catch (SQLException e) {
             log.atError().log("GET addClassRoom failed: " + e.getMessage());
@@ -84,7 +84,7 @@ public class ClassRoomController extends AbstractController {
             List<UserForCombo> teachersList;
             List<Lesson> lessonsList;
             try {
-                teachersList = usersService.getAllTeachers();
+                teachersList = usersService.getAllTeachers(true);
                 lessonsList = lessonsService.getAll().stream().map(Lesson::convertFrom).toList();
             } catch (SQLException e) {
                 log.atError().log("POST addClassRoom failed: " + e.getMessage());
@@ -137,7 +137,7 @@ public class ClassRoomController extends AbstractController {
             ClassRoom classRoom = ClassRoom.convertFrom(classRoomDTO.orElseThrow());
 
             modelMap.put("classRoom", classRoom);
-            modelMap.put("teachersList", usersService.getAllTeachers());
+            modelMap.put("teachersList", usersService.getAllTeachers(true));
             modelMap.put("studentsList", studentsService.getStudentsForLesson(classRoom.lessonId()));
             modelMap.put("lessonsList", lessonsService.getAll().stream().map(Lesson::convertFrom).toList());
             modelMap.put("submitButton", "Update");
@@ -153,7 +153,7 @@ public class ClassRoomController extends AbstractController {
     public String updateClassRoom(ModelMap modelMap, @Valid ClassRoom classRoom, BindingResult result) {
         if (result.hasErrors()) {
             try {
-                modelMap.put("teachersList", usersService.getAllTeachers());
+                modelMap.put("teachersList", usersService.getAllTeachers(true));
                 modelMap.put("lessonsList", lessonsService.getAll().stream().map(Lesson::convertFrom).toList());
                 modelMap.put("studentsList", studentsService.getStudentsForLesson(classRoom.lessonId()));
             } catch (SQLException e) {
@@ -182,7 +182,7 @@ public class ClassRoomController extends AbstractController {
             ClassRoom classRoom = ClassRoom.convertFrom(classRoomDTO.orElseThrow());
 
             modelMap.put("classRoom", classRoom);
-            modelMap.put("teachersList", usersService.getAllTeachers());
+            modelMap.put("teachersList", usersService.getAllTeachers(true));
             modelMap.put("studentsList", studentsService.getStudentsForLesson(classRoom.lessonId()));
             modelMap.put("lessonsList", lessonsService.getAll().stream().map(Lesson::convertFrom).toList());
         } catch (SQLException e) {
