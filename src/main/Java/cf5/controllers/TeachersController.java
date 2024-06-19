@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
